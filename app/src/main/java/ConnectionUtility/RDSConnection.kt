@@ -1,8 +1,10 @@
 package ConnectionUtility
 import java.sql.Connection
 import java.sql.DriverManager
-import java.sql.SQLTimeoutException
 import java.sql.SQLException
+import java.sql.SQLTimeoutException
+import java.sql.PreparedStatement
+import java.sql.ResultSet
 
 // class that manages connection between the application and our rds server
 class RDSConnection (jdbc: String, username: String, password: String){
@@ -32,8 +34,34 @@ class RDSConnection (jdbc: String, username: String, password: String){
 
     }
 
-    // executing a query and buffering results
-    fun executeSQL(sql: String){
+    // executing a query
+    fun executeSQL(sql: String): ResultSet?{
+        // checking if the connection is still valid
+        // waiting 5 seconds maximum for a timeout
+        // double exclamation is to assert that the connection is not null at this point
+        // since there arent multiple threads accessing the connection
+        if (rdsConnection == null || !rdsConnection!!.isValid(5)){
+            rdsConnection = null
+            return null
+        }
+        // we have some connection here, lets try accessing the results
+        val query: PreparedStatement = rdsConnection!!.prepareStatement(sql)
+
+        val results: ResultSet? = try {
+            query.executeQuery()
+        } catch(e: Exception) {
+            // some error with the sql query
+            null
+        }
+
+        // returning the result set
+        return results
 
     }
+
+    // iterating through a result set and updating a list with results
+
+
+
+
 }

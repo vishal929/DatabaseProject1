@@ -1,10 +1,17 @@
 package ConnectionUtility
 import java.sql.Connection
 import java.sql.DriverManager
+// exceptions
 import java.sql.SQLException
 import java.sql.SQLTimeoutException
+// prepared statement is the wrapper for sql text support
 import java.sql.PreparedStatement
+// result set is the object that holds raw sql output as a cursor iteration
 import java.sql.ResultSet
+// metadata for result set
+import java.sql.ResultSetMetaData
+// need the result object for packing our sql queries
+import ConnectionUtility.ResultObject
 
 // class that manages connection between the application and our rds server
 class RDSConnection (jdbc: String, username: String, password: String){
@@ -59,7 +66,38 @@ class RDSConnection (jdbc: String, username: String, password: String){
 
     }
 
-    // iterating through a result set and updating a list with results
+    // grabbing all the data from a result set (no need to buffer since our data is not large in this example)
+    // returns a type of ResultObject (contains data to display to the user)
+    fun grabData(rs: ResultSet): ResultObject?{
+        val result:ResultObject = ResultObject()
+        try {
+            // grabbing metadata
+            val metaData: ResultSetMetaData = rs.metaData
+            val numColumns = metaData.columnCount
+            val colNames: ArrayList<String> = ArrayList<String>()
+            for (i in 0..numColumns){
+                colNames.add(metaData.getColumnName(i))
+            }
+            // initializing the resultObject based on metadata from ResultSet (column names, etc.)
+            result.setMetaData(colNames)
+            while (rs.next()) {
+                // extracting data from each column using the index
+                for (i in 0..numColumns){
+                    if (result.getTypeFromColNum(i)){
+                        // we have a string
+                        result.addStrData(i,rs.getString(i))
+                    } else{
+                        // we have an int
+                        result.addIntData(i,rs.getInt(i))
+                    }
+                }
+            }
+        } catch (e:Exception){
+            // something went wrong with the results
+            return null
+        }
+        return result
+    }
 
 
 

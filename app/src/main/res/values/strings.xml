@@ -4,4 +4,11 @@
     <string name="title_dashboard">History</string>
     <string name="title_notifications">Notifications</string>
     <string name="Speech_Text">Speech to text</string>
+    <string name="sql_input_text"> Type SQL Query Here</string>
+    <string name="sql_output_text"> SQL Output Here</string>
+    <string name="sql_button_text">Execute Query</string>
+    <string name="rds_mysql_text">RDS(MySQL)</string>
+    <string name="redshift_text">Redshift</string>
+    <string name="reset_button_text">Reset</string>
+    <string name="choose_database_string">Choose a Database:</string>
 </resources>

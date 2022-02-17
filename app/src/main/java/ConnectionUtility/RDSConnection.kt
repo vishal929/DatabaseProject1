@@ -22,6 +22,8 @@ class RDSConnection (jdbc: String, username: String, password: String){
     var pass: String = password
     // nullable connection, since if a connection was invalid, we assign it null
     var rdsConnection: Connection? = null
+    // stores a result set of the last query, for capsulation in classes
+    var sqlResultSet: ResultSet? = null
 
     // connecting to our RDS database via jdbc url, could be connection exception
     fun connect(): Int {
@@ -42,14 +44,15 @@ class RDSConnection (jdbc: String, username: String, password: String){
     }
 
     // executing a query
-    fun executeSQL(sql: String): ResultSet?{
+    fun executeSQL(sql: String){
         // checking if the connection is still valid
         // waiting 5 seconds maximum for a timeout
         // double exclamation is to assert that the connection is not null at this point
         // since there arent multiple threads accessing the connection
         if (rdsConnection == null || !rdsConnection!!.isValid(5)){
             rdsConnection = null
-            return null
+            this.sqlResultSet = null
+            return
         }
         // we have some connection here, lets try accessing the results
         val query: PreparedStatement = rdsConnection!!.prepareStatement(sql)
@@ -58,12 +61,12 @@ class RDSConnection (jdbc: String, username: String, password: String){
             query.executeQuery()
         } catch(e: Exception) {
             // some error with the sql query
-            null
+            this.sqlResultSet=null
+            return
         }
 
-        // returning the result set
-        return results
-
+        // setting our result set
+        this.sqlResultSet = results
     }
 
     // grabbing all the data from a result set (no need to buffer since our data is not large in this example)

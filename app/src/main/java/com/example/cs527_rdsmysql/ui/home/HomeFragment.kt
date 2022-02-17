@@ -63,6 +63,8 @@ class HomeFragment : Fragment() {
         val results: ResultObject? = conn.grabData(conn.sqlResultSet!!)
         // IF results is null, something went wrong with grabbing data
         // if we reached here we successfully grabbed our data
-        print(results!!.intColumns.size.toString() + ", " + results.stringColumns.size.toString())
+        val sqlOut : TextView = View.findViewById(R.id.sqlOutTextView)
+        val outString: String = results!!.intColumns.size.toString() + ", " + results.stringColumns.size.toString()
+        sqlOut.text = outString
     }
 }

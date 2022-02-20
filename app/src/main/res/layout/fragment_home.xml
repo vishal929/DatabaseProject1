@@ -4,66 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:onClick="queryButtonOnClick"
     tools:context=".ui.home.HomeFragment">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/speechToTextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="60dp"
         android:clickable="true"
         android:contentDescription="@string/Speech_Text"
         android:src="@android:drawable/ic_btn_speak_now"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.101"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sqlOutTextView"
+        app:layout_constraintVertical_bias="0.892" />
 
     <RadioButton
         android:id="@+id/rdsRadioButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="32dp"
         android:text="@string/rds_mysql_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chooseSourceEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView" />
 
     <RadioButton
         android:id="@+id/redshiftRadioButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="164dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="34dp"
         android:text="@string/redshift_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chooseSourceEditText" />
+        app:layout_constraintStart_toEndOf="@+id/rdsRadioButton"
+        app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView" />
 
     <Button
         android:id="@+id/executeQueryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="146dp"
-        android:layout_marginBottom="18dp"
+        android:layout_marginTop="11dp"
+        android:onClick="queryButtonOnClick"
         android:text="@string/sql_button_text"
-        app:layout_constraintBottom_toTopOf="@+id/sqlOutTextView"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sqlInEditText" />
 
     <TextView
         android:id="@+id/sqlOutTextView"
         android:layout_width="387dp"
         android:layout_height="170dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginBottom="21dp"
         android:text="@string/sql_output_text"
-        app:layout_constraintBottom_toTopOf="@+id/speechToTextButton"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/executeQueryButton" />
 
-    <EditText
-        android:id="@+id/chooseSourceEditText"
+    <TextView
+        android:id="@+id/chooseSourceTextView"
         android:layout_width="340dp"
         android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:clickable="false"
         android:contextClickable="false"
         android:editable="false"
@@ -73,28 +75,30 @@
         android:inputType="textMultiLine"
         android:minHeight="48dp"
         android:text="@string/choose_database_string"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/sqlInTextView"
+    <EditText
+        android:id="@+id/sqlInEditText"
         android:layout_width="387dp"
         android:layout_height="170dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="28dp"
         android:editable="true"
         android:text="@string/sql_input_text"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rdsRadioButton" />
+        app:layout_constraintTop_toBottomOf="@+id/redshiftRadioButton" />
 
     <Button
         android:id="@+id/resetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="32dp"
         android:text="@string/reset_button_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chooseSourceEditText" />
+        app:layout_constraintHorizontal_bias="0.396"
+        app:layout_constraintStart_toEndOf="@+id/redshiftRadioButton"
+        app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

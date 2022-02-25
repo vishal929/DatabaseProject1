@@ -12,6 +12,7 @@ import java.sql.ResultSet
 import java.sql.ResultSetMetaData
 // need the result object for packing our sql queries
 import ConnectionUtility.ResultObject
+import android.util.Log
 
 // class that manages connection between the application and our rds server
 class RDSConnection (jdbc: String, username: String, password: String){
@@ -29,12 +30,17 @@ class RDSConnection (jdbc: String, username: String, password: String){
     fun connect(): Int {
         var driverConnection : Connection? = null
         try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance()
             driverConnection = DriverManager.getConnection(jdbcURL,user,pass)
         } catch(e: SQLException){
             // error with access to database or url is null
+            Log.d("rdsconnection","sqlException")
+            Log.d("rdsconnection",e.message.toString())
             return 1
         } catch(e: SQLTimeoutException){
             // connection timed out for the driver
+            Log.d("rdsconnection","sqlTimeoutException")
+            Log.d("rdsconnection",e.message.toString())
             return 2
         }
         // setting our connection to be the successful one
@@ -78,20 +84,24 @@ class RDSConnection (jdbc: String, username: String, password: String){
             val metaData: ResultSetMetaData = rs.metaData
             val numColumns = metaData.columnCount
             val colNames: ArrayList<String> = ArrayList<String>()
-            for (i in 0..numColumns){
+            for (i in 1..numColumns){
                 colNames.add(metaData.getColumnName(i))
             }
             // initializing the resultObject based on metadata from ResultSet (column names, etc.)
             result.setMetaData(colNames)
             while (rs.next()) {
                 // extracting data from each column using the index
-                for (i in 0..numColumns){
+                for (i in 1..numColumns){
                     if (result.getTypeFromColNum(i)){
                         // we have a string
-                        result.addStrData(i,rs.getString(i))
+                        val stringData: String = rs.getString(i)
+                        Log.d("stringData", stringData)
+                        result.addStrData(i,stringData)
                     } else{
                         // we have an int
-                        result.addIntData(i,rs.getInt(i))
+                        val intData: Int = rs.getInt(i)
+                        Log.d("intData", intData.toString())
+                        result.addIntData(i,intData)
                     }
                 }
             }

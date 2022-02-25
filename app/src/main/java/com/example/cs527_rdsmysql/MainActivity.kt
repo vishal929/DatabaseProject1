@@ -68,10 +68,10 @@ class MainActivity : AppCompatActivity() {
                 Log.d("connection", "WE HAVE AN INVALID CONNECTION!")
             }
             // if successful, we move onto sql query
-            val prepared: Statement = conn.rdsConnection!!.prepareStatement("SELECT * FROM aisles")
+            val prepared: PreparedStatement = conn.rdsConnection!!.prepareStatement("SELECT * FROM aisles")
             //conn.executeSQL("SELECT * IN aisles")
             //conn.executeSQL(sqlIn.text.toString())
-            val resultCursor: ResultSet = prepared.executeQuery("SELECT * FROM aisles")
+            val resultCursor: ResultSet = prepared.executeQuery()
             while (resultCursor.next()){
                 Log.d("sql",resultCursor.getString(2));
             }

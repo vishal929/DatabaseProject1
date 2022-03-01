@@ -52,9 +52,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun queryButtonOnClick(view: View){
+
         AsyncTask.execute {
-            // run your queries here!
             val sqlIn: EditText = findViewById(R.id.sqlInEditText)
+            Log.d("sqlINTextBox", sqlIn.text.toString())
+            // run your queries here!
             // grabbing results based on sql text in the sqlInTextView
             val jdbcUrl = "jdbc:mysql://project1.cabeyzfei4ko.us-east-1.rds.amazonaws.com:3306/Instacart"
             val user = "dtbs527"
@@ -68,8 +70,8 @@ class MainActivity : AppCompatActivity() {
                 Log.d("connection", "WE HAVE AN INVALID CONNECTION!")
             }
             // if successful, we move onto sql query
-            conn.executeSQL("SELECT * FROM aisles")
-            //conn.executeSQL(sqlIn.text.toString())
+            //conn.executeSQL("SELECT * FROM aisles")
+            conn.executeSQL(sqlIn.text.toString())
             /*
             //val prepared: PreparedStatement = conn.rdsConnection!!.prepareStatement("SELECT * FROM aisles")
             val resultCursor: ResultSet = prepared.executeQuery()

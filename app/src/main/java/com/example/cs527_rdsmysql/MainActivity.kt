@@ -56,9 +56,9 @@ class MainActivity : AppCompatActivity() {
             // run your queries here!
             val sqlIn: EditText = findViewById(R.id.sqlInEditText)
             // grabbing results based on sql text in the sqlInTextView
-            val jdbcUrl = "jdbcHERE"
-            val user = "userHERE"
-            val pass = "passHERE"
+            val jdbcUrl = "jdbc:mysql://project1.cabeyzfei4ko.us-east-1.rds.amazonaws.com:3306/Instacart"
+            val user = "dtbs527"
+            val pass = "Nosqldatabase"
             val conn: RDSConnection = RDSConnection(jdbcUrl, user, pass)
             // try a connection here
             conn.connect()
@@ -68,16 +68,21 @@ class MainActivity : AppCompatActivity() {
                 Log.d("connection", "WE HAVE AN INVALID CONNECTION!")
             }
             // if successful, we move onto sql query
-            val prepared: PreparedStatement = conn.rdsConnection!!.prepareStatement("SELECT * FROM aisles")
-            //conn.executeSQL("SELECT * IN aisles")
+            conn.executeSQL("SELECT * FROM aisles")
             //conn.executeSQL(sqlIn.text.toString())
+            /*
+            //val prepared: PreparedStatement = conn.rdsConnection!!.prepareStatement("SELECT * FROM aisles")
             val resultCursor: ResultSet = prepared.executeQuery()
             while (resultCursor.next()){
                 Log.d("sql",resultCursor.getString(2));
             }
+            */
             // if we executed the query successfully, we move onto results gathering
             // CHECK FOR NULL HERE
-            //val results: ResultObject? = conn.grabData(conn.sqlResultSet!!)
+            val results: ResultObject? = conn.grabData(conn.sqlResultSet!!)
+            if (results== null){
+                Log.d("sql","RESULTS IS NULL SOMETHING WENT WRONG!\n");
+            }
             // IF results is null, something went wrong with grabbing data
             // if we reached here we successfully grabbed our data
             /*

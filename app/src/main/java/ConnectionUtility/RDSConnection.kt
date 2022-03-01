@@ -56,6 +56,7 @@ class RDSConnection (jdbc: String, username: String, password: String){
         // double exclamation is to assert that the connection is not null at this point
         // since there arent multiple threads accessing the connection
         if (rdsConnection == null || !rdsConnection!!.isValid(5)){
+            Log.d("sql","rdsConnection is NULL! Cannot execute query!")
             rdsConnection = null
             this.sqlResultSet = null
             return
@@ -66,6 +67,7 @@ class RDSConnection (jdbc: String, username: String, password: String){
         val results: ResultSet? = try {
             query.executeQuery()
         } catch(e: Exception) {
+            Log.d("sql","Error executing query!")
             // some error with the sql query
             this.sqlResultSet=null
             return
@@ -82,6 +84,7 @@ class RDSConnection (jdbc: String, username: String, password: String){
         try {
             // grabbing metadata
             val metaData: ResultSetMetaData = rs.metaData
+            // keep in mind that for sql columns are 1 indexed, not 0 indexed
             val numColumns = metaData.columnCount
             val colNames: ArrayList<String> = ArrayList<String>()
             for (i in 1..numColumns){
@@ -89,6 +92,7 @@ class RDSConnection (jdbc: String, username: String, password: String){
             }
             // initializing the resultObject based on metadata from ResultSet (column names, etc.)
             result.setMetaData(colNames)
+            Log.d("RDS CONNECTION","GOT HERE!")
             while (rs.next()) {
                 // extracting data from each column using the index
                 for (i in 1..numColumns){
@@ -106,6 +110,8 @@ class RDSConnection (jdbc: String, username: String, password: String){
                 }
             }
         } catch (e:Exception){
+            Log.d("RDS CONNECTION", "SOMETHING WENT WRONG WITH RESULT GRABBING:");
+            Log.d("RDS CONNECTION",e.message.toString())
             // something went wrong with the results
             return null
         }

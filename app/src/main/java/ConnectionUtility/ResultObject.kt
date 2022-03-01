@@ -1,10 +1,11 @@
 package ConnectionUtility
 
+import android.util.Log
 import java.lang.IndexOutOfBoundsException
 
 // idea is that when we get a result set, we want to put results into a resultObject
 // ResultObject will include column headers, and data to display in the app
-class ResultObject {
+class ResultObject(){
     // array of string values we might get from a query
     val stringColumns: ArrayList<ArrayList<String>> = ArrayList<ArrayList<String>>()
     // array of integer values we might get from a query
@@ -78,6 +79,9 @@ class ResultObject {
                 "reordered" -> {
                     metaDataHelper("reordered",false)
                 }
+                else -> {
+                    Log.d("ResultObjectDebug", "Given element not found!")
+                }
             }
         }
     }
@@ -91,27 +95,39 @@ class ResultObject {
                 return nameType[i]
             }
         }
-        throw NoSuchFieldException()
+        throw NoSuchFieldException("field name does not exist")
     }
 
    // returns True if a string, false if int
     // if the given index is out of bounds, we throw NoSuchFieldException
+    // columns are 1 indexed in sql, so we decrement the colNum first
     fun getTypeFromColNum(colNum:Int): Boolean{
-        if (colNum < nameType.size) return nameType[colNum]
-        throw IndexOutOfBoundsException()
+       val newIndex = colNum-1
+        if (newIndex < nameType.size) return nameType[newIndex]
+        throw IndexOutOfBoundsException("column number is out of range when checking column type")
     }
 
    // adds integer data to a given column
     // throws IndexOutOfBoundsException if the column number is out of range
+    // columns are 1 indexed in sql, so we decreement the col num first
     fun addIntData(colNum:Int, value: Int){
-        if (colNum < indices.size) intColumns[indices[colNum]].add(value)
-        throw IndexOutOfBoundsException()
+       val newIndex = colNum-1
+        if (newIndex < indices.size) {
+            intColumns[indices[newIndex]].add(value)
+        } else {
+            throw IndexOutOfBoundsException("column number is out of range for adding an integer")
+        }
     }
 
    // adds string data to a given column
     // if the index is out of bounds, we throw IndexOutOfBoundsException
+    // columns are 1 indexed in sql, so we decrement the col num first
     fun addStrData(colNum:Int, value: String){
-       if (colNum < indices.size) stringColumns[indices[colNum]].add(value)
-       throw IndexOutOfBoundsException()
+       val newIndex = colNum-1
+       if (newIndex < indices.size) {
+           stringColumns[indices[newIndex]].add(value)
+       } else {
+           throw IndexOutOfBoundsException("column number is out of range for adding a string")
+       }
     }
 }

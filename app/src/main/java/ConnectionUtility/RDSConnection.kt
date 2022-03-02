@@ -127,5 +127,28 @@ class RDSConnection (jdbc: String, username: String, password: String){
         return schemaNames
     }
 
+    // function that gets the current schema
+    fun getCurrentSchema(): String{
+       try{
+           return this.rdsConnection!!.catalog
+       } catch(e:Exception){
+           Log.d("grabCurrentSchema","Error grabbing current schema:")
+           Log.d("grabCurrentSchema",e.message.toString())
+       }
+        // returns empty string on failure
+        return ""
+    }
+
+    // switches connection to a specific schema based on the name of it
+    fun selectSchema(schemaName: String){
+       try {
+           // switches current catalog to the desired one
+           this.rdsConnection?.catalog = schemaName
+       } catch(e:Exception){
+           Log.d("schemaSwitch", "error while switching schemas:")
+           Log.d("schemaSwitch",e.message.toString())
+       }
+    }
+
 
 }

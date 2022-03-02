@@ -64,7 +64,11 @@ class MainActivity : AppCompatActivity() {
             val conn: RDSConnection = RDSConnection(jdbcUrl, user, pass)
             // try a connection here
             conn.connect()
-            if (conn.rdsConnection != null) {
+            val schemaNames:ArrayList<String> = conn.getSchemas()
+            for (schema in schemaNames){
+                Log.d("schemaPrinting",schema)
+            }
+                if (conn.rdsConnection != null) {
                 Log.d("connection", "WE GOT A CONNECTION!")
             } else {
                 Log.d("connection", "WE HAVE AN INVALID CONNECTION!")

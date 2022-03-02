@@ -1,18 +1,12 @@
 package ConnectionUtility
-import java.sql.Connection
-import java.sql.DriverManager
 // exceptions
-import java.sql.SQLException
-import java.sql.SQLTimeoutException
 // prepared statement is the wrapper for sql text support
-import java.sql.PreparedStatement
 // result set is the object that holds raw sql output as a cursor iteration
-import java.sql.ResultSet
 // metadata for result set
-import java.sql.ResultSetMetaData
 // need the result object for packing our sql queries
 import ConnectionUtility.ResultObject
 import android.util.Log
+import java.sql.*
 
 // class that manages connection between the application and our rds server
 class RDSConnection (jdbc: String, username: String, password: String){
@@ -118,7 +112,20 @@ class RDSConnection (jdbc: String, username: String, password: String){
         return result
     }
 
-
+    fun getSchemas(): ArrayList<String>{
+        val schemaNames:ArrayList<String> = ArrayList<String>()
+        try{
+            val meta:DatabaseMetaData = this.rdsConnection!!.metaData
+            val schemas: ResultSet = meta.catalogs
+            while (schemas.next()){
+                schemaNames.add(schemas.getString(1))
+            }
+        } catch (e: Exception){
+            Log.d("schemaNamesRDS","ERROR GETTING SCHEMA NAMES:")
+            Log.d("schemaNamesRDS",e.message.toString())
+        }
+        return schemaNames
+    }
 
 
 }

@@ -74,8 +74,15 @@ class MainActivity : AppCompatActivity() {
             for (schema in schemaNames){
                 Log.d("schemaPrinting",schema)
             }
-            val currentSchema:String = conn.getCurrentSchema()
+            var currentSchema:String = conn.getCurrentSchema()
             Log.d("currentSchemaCheck",currentSchema)
+
+            // switching schema for fun
+            conn.selectSchema("InstacartCopy")
+
+            currentSchema = conn.getCurrentSchema()
+            Log.d("currentSchemaCheck",currentSchema)
+
             // if successful, we move onto sql query
             //conn.executeSQL("SELECT * FROM aisles")
             conn.executeSQL(sqlIn.text.toString())

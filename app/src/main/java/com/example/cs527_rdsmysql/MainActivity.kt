@@ -1,6 +1,7 @@
 package com.example.cs527_rdsmysql
 
 import ConnectionUtility.RDSConnection
+import ConnectionUtility.RedshiftConnection
 import ConnectionUtility.ResultObject
 import android.os.AsyncTask
 import android.os.Bundle
@@ -58,12 +59,14 @@ class MainActivity : AppCompatActivity() {
             Log.d("sqlINTextBox", sqlIn.text.toString())
             // run your queries here!
             // grabbing results based on sql text in the sqlInTextView
+            /*BELOW IS RDS SETUP*/
+            /*
             val jdbcUrl = "jdbc:mysql://project1.cabeyzfei4ko.us-east-1.rds.amazonaws.com:3306/Instacart"
             val user = "dtbs527"
             val pass = "Nosqldatabase"
             val conn: RDSConnection = RDSConnection(jdbcUrl, user, pass)
             // try a connection here
-            conn.connect()
+            conn.connect(true)
 
             if (conn.rdsConnection != null) {
                 Log.d("connection", "WE GOT A CONNECTION!")
@@ -84,21 +87,26 @@ class MainActivity : AppCompatActivity() {
             Log.d("currentSchemaCheck",currentSchema)
 
             // if successful, we move onto sql query
-            //conn.executeSQL("SELECT * FROM aisles")
             conn.executeSQL(sqlIn.text.toString())
-            /*
-            //val prepared: PreparedStatement = conn.rdsConnection!!.prepareStatement("SELECT * FROM aisles")
-            val resultCursor: ResultSet = prepared.executeQuery()
-            while (resultCursor.next()){
-                Log.d("sql",resultCursor.getString(2));
-            }
-            */
+
+             */
+            /*REDSHIFT SETUP BELOW*/
+            val myAccessKey:String = "myAccessKey"
+            val mySecretKey:String = "mySecretKey"
+            val myUser:String = "dtbs527"
+            val redshift:RedshiftConnection = RedshiftConnection(myAccessKey,mySecretKey,myUser)
+            val sqlID:String = redshift.sendSQLRequest("SELECT * FROM aisles")
+            redshift.checkSQLRequest(sqlID)
+            redshift.grabSQLResult(sqlID)
+
             // if we executed the query successfully, we move onto results gathering
             // CHECK FOR NULL HERE
+            /*
             val results: ResultObject? = conn.grabData(conn.sqlResultSet!!)
             if (results== null){
                 Log.d("sql","RESULTS IS NULL SOMETHING WENT WRONG!\n");
             }
+            */
             // IF results is null, something went wrong with grabbing data
             // if we reached here we successfully grabbed our data
             /*

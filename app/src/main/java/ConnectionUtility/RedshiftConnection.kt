@@ -116,13 +116,25 @@ class RedshiftConnection(
             // Iterate through the List element where each element is a List object.
             val dataList:List<List<Field>> = response.records()
 
-            // Print out the records.
+            // grabbing column metadata
+            val metadata: List<ColumnMetadata> = response.columnMetadata()
+            // print out column metadata
+            for (columnData in metadata){
+                Log.d("ColumnMetaDataRedshift",columnData.name())
+                Log.d("ColumnMetaDataRedshift",columnData.typeName())
+            }
+
+            // Print out the records
             for (list in dataList) {
                 for (myField in list) {
                     val field = myField as Field
                     val value = field.stringValue()
                     if (value != null) {
                         Log.d("SQLRESULT","Got field: $value")
+                    }
+                    val intVal = field.longValue()
+                    if (intVal!=null){
+                        Log.d("SQLResult,","Got field: $intVal")
                     }
                 }
             }

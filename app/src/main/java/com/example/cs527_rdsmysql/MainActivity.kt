@@ -91,8 +91,8 @@ class MainActivity : AppCompatActivity() {
 
              */
             /*REDSHIFT SETUP BELOW*/
-            val myAccessKey:String = "myAccessKey"
-            val mySecretKey:String = "mySecretKey"
+            val myAccessKey:String = ""
+            val mySecretKey:String = ""
             val myUser:String = "dtbs527"
             val redshift:RedshiftConnection = RedshiftConnection(myAccessKey,mySecretKey,myUser)
             val sqlID:String = redshift.sendSQLRequest("SELECT * FROM aisles")

@@ -93,11 +93,11 @@ class MainActivity : AppCompatActivity() {
             /*REDSHIFT SETUP BELOW*/
             val myAccessKey:String = ""
             val mySecretKey:String = ""
-            val myUser:String = "dtbs527"
+            val myUser:String = ""
             val redshift:RedshiftConnection = RedshiftConnection(myAccessKey,mySecretKey,myUser)
             val sqlID:String = redshift.sendSQLRequest("SELECT * FROM aisles")
             redshift.checkSQLRequest(sqlID)
-            redshift.grabSQLResult(sqlID)
+            val result: ResultObject? = redshift.grabSQLResult(sqlID)
 
             // if we executed the query successfully, we move onto results gathering
             // CHECK FOR NULL HERE

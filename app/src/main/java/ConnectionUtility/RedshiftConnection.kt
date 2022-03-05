@@ -105,7 +105,9 @@ class RedshiftConnection(
     }
 
     // grabbing sql request results
-    fun grabSQLResult(sqlID:String){
+    fun grabSQLResult(sqlID:String): ResultObject?{
+        // grab records as metadata object result set
+        var results:ResultObject? = null
         try {
             val resultRequest = GetStatementResultRequest.builder()
                 .id(sqlID)
@@ -118,29 +120,40 @@ class RedshiftConnection(
 
             // grabbing column metadata
             val metadata: List<ColumnMetadata> = response.columnMetadata()
-            // print out column metadata
+            val columnNames:ArrayList<String> = ArrayList<String>()
+            // add column metadata for extracting data logic
             for (columnData in metadata){
+                columnNames.add(columnData.name())
                 Log.d("ColumnMetaDataRedshift",columnData.name())
                 Log.d("ColumnMetaDataRedshift",columnData.typeName())
             }
-
-            // Print out the records
+            results = ResultObject()
+            results.setMetaData(columnNames)
             for (list in dataList) {
-                for (myField in list) {
-                    val field = myField as Field
-                    val value = field.stringValue()
-                    if (value != null) {
-                        Log.d("SQLRESULT","Got field: $value")
-                    }
-                    val intVal = field.longValue()
-                    if (intVal!=null){
-                        Log.d("SQLResult,","Got field: $intVal")
-                    }
+                for (i in list.indices)
+                 {
+                     //Log.d("at index:",i.toString())
+                     val field = list[i] as Field
+                     if (results.getTypeFromColNum(i+1)){
+                         // we have a string
+                         val value = field.stringValue()
+                         results.addStrData(i+1,value)
+                         Log.d("SQLRESULT","Got field: $value")
+                     } else {
+                        // we have an integer
+                         val intVal = field.longValue()
+                         results.addIntData(i+1,intVal.toInt())
+                         Log.d("SQLResult,","Got field: $intVal")
+                     }
+
+
+
                 }
             }
         } catch (e: Exception) {
             Log.d("SqlResult","Error with grabbing SQL results:")
             Log.d("SqlResult",e.message.toString())
         }
+        return results
     }
 }

@@ -13,6 +13,7 @@ import java.sql.ResultSetMetaData
 // need the result object for packing our sql queries
 import ConnectionUtility.ResultObject
 import android.util.Log
+import android.widget.Toast
 
 // class that manages connection between the application and our rds server
 class RDSConnection (jdbc: String, username: String, password: String){
@@ -34,11 +35,13 @@ class RDSConnection (jdbc: String, username: String, password: String){
             driverConnection = DriverManager.getConnection(jdbcURL,user,pass)
         } catch(e: SQLException){
             // error with access to database or url is null
+            Toast.makeText(this@connect, "Access Error", Toast.LENGTH_SHORT).show()
             Log.d("rdsconnection","sqlException")
             Log.d("rdsconnection",e.message.toString())
             return 1
         } catch(e: SQLTimeoutException){
             // connection timed out for the driver
+            Toast.makeText(this, "Time Out Error", Toast.LENGTH_SHORT).show()
             Log.d("rdsconnection","sqlTimeoutException")
             Log.d("rdsconnection",e.message.toString())
             return 2
@@ -67,6 +70,7 @@ class RDSConnection (jdbc: String, username: String, password: String){
             query.executeQuery()
         } catch(e: Exception) {
             // some error with the sql query
+            Toast.makeText(this, "Query Exec. Error", Toast.LENGTH_SHORT).show()
             this.sqlResultSet=null
             return
         }
@@ -107,6 +111,7 @@ class RDSConnection (jdbc: String, username: String, password: String){
             }
         } catch (e:Exception){
             // something went wrong with the results
+            Toast.makeText(this, "Result Error", Toast.LENGTH_SHORT).show()
             return null
         }
         return result

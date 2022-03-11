@@ -56,9 +56,9 @@ class MainActivity : AppCompatActivity() {
             // run your queries here!
             val sqlIn: EditText = findViewById(R.id.sqlInEditText)
             // grabbing results based on sql text in the sqlInTextView
-            val jdbcUrl = "jdbcHERE"
-            val user = "userHERE"
-            val pass = "passHERE"
+            val jdbcUrl = "xxxx"
+            val user = "xxxx"
+            val pass = "xxxx"
             val conn: RDSConnection = RDSConnection(jdbcUrl, user, pass)
             // try a connection here
             conn.connect()

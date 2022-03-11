@@ -1,6 +1,7 @@
 package com.example.cs527_rdsmysql
 
 import ConnectionUtility.RDSConnection
+import ConnectionUtility.RedshiftConnection
 import ConnectionUtility.ResultObject
 import android.os.AsyncTask
 import android.os.Bundle
@@ -52,32 +53,60 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun queryButtonOnClick(view: View){
+
         AsyncTask.execute {
-            // run your queries here!
             val sqlIn: EditText = findViewById(R.id.sqlInEditText)
+            Log.d("sqlINTextBox", sqlIn.text.toString())
+            // run your queries here!
             // grabbing results based on sql text in the sqlInTextView
-            val jdbcUrl = "xxxx"
-            val user = "xxxx"
-            val pass = "xxxx"
+            /*BELOW IS RDS SETUP*/
+            /*
+            val jdbcUrl = "jdbc:mysql://project1.cabeyzfei4ko.us-east-1.rds.amazonaws.com:3306/Instacart"
+            val user = "dtbs527"
+            val pass = "Nosqldatabase"
             val conn: RDSConnection = RDSConnection(jdbcUrl, user, pass)
             // try a connection here
-            conn.connect()
+            conn.connect(true)
+
             if (conn.rdsConnection != null) {
                 Log.d("connection", "WE GOT A CONNECTION!")
             } else {
                 Log.d("connection", "WE HAVE AN INVALID CONNECTION!")
             }
-            // if successful, we move onto sql query
-            val prepared: PreparedStatement = conn.rdsConnection!!.prepareStatement("SELECT * FROM aisles")
-            //conn.executeSQL("SELECT * IN aisles")
-            //conn.executeSQL(sqlIn.text.toString())
-            val resultCursor: ResultSet = prepared.executeQuery()
-            while (resultCursor.next()){
-                Log.d("sql",resultCursor.getString(2));
+            val schemaNames:ArrayList<String> = conn.getSchemas()
+            for (schema in schemaNames){
+                Log.d("schemaPrinting",schema)
             }
+            var currentSchema:String = conn.getCurrentSchema()
+            Log.d("currentSchemaCheck",currentSchema)
+
+            // switching schema for fun
+            conn.selectSchema("InstacartCopy")
+
+            currentSchema = conn.getCurrentSchema()
+            Log.d("currentSchemaCheck",currentSchema)
+
+            // if successful, we move onto sql query
+            conn.executeSQL(sqlIn.text.toString())
+
+             */
+            /*REDSHIFT SETUP BELOW*/
+            val myAccessKey:String = ""
+            val mySecretKey:String = ""
+            val myUser:String = ""
+            val redshift:RedshiftConnection = RedshiftConnection(myAccessKey,mySecretKey,myUser)
+            val sqlID:String = redshift.sendSQLRequest("SELECT * FROM aisles")
+            redshift.checkSQLRequest(sqlID)
+            val result: ResultObject? = redshift.grabSQLResult(sqlID)
+
             // if we executed the query successfully, we move onto results gathering
             // CHECK FOR NULL HERE
-            //val results: ResultObject? = conn.grabData(conn.sqlResultSet!!)
+            /*
+            val results: ResultObject? = conn.grabData(conn.sqlResultSet!!)
+            if (results== null){
+                Log.d("sql","RESULTS IS NULL SOMETHING WENT WRONG!\n");
+            }
+            */
             // IF results is null, something went wrong with grabbing data
             // if we reached here we successfully grabbed our data
             /*

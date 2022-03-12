@@ -25,8 +25,8 @@
         android:id="@+id/rdsRadioButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:text="@string/rds_mysql_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView" />
@@ -35,8 +35,8 @@
         android:id="@+id/redshiftRadioButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:text="@string/redshift_text"
         app:layout_constraintStart_toEndOf="@+id/rdsRadioButton"
         app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView" />
@@ -45,10 +45,11 @@
         android:id="@+id/executeQueryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="8dp"
         android:onClick="queryButtonOnClick"
         android:text="@string/sql_button_text"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.952"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sqlInEditText" />
 
@@ -63,8 +64,11 @@
 
     <TextView
         android:id="@+id/chooseSourceTextView"
-        android:layout_width="340dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         android:clickable="false"
         android:contextClickable="false"
         android:editable="false"
@@ -76,28 +80,42 @@
         android:text="@string/choose_database_string"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <EditText
         android:id="@+id/sqlInEditText"
         android:layout_width="387dp"
-        android:layout_height="170dp"
-        android:layout_marginTop="28dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:editable="true"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
         android:text="@string/sql_input_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/redshiftRadioButton" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner1" />
 
     <Button
         android:id="@+id/resetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="10dp"
         android:text="@string/reset_button_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.396"
         app:layout_constraintStart_toEndOf="@+id/redshiftRadioButton"
+        app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView" />
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

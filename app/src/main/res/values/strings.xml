@@ -11,4 +11,7 @@
     <string name="redshift_text">Redshift</string>
     <string name="reset_button_text">Reset</string>
     <string name="choose_database_string">Choose a Database:</string>
+    <string name="username_input_text">Enter username</string>
+    <string name="password_input_text">Enter password</string>
+    <string name="connect_button_text">Connect</string>
 </resources>

@@ -3,28 +3,33 @@ package com.example.cs527_rdsmysql
 import ConnectionUtility.RDSConnection
 import ConnectionUtility.RedshiftConnection
 import ConnectionUtility.ResultObject
+import android.app.ActivityManager
+import android.app.AlertDialog
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.cs527_rdsmysql.databinding.ActivityMainBinding
+import com.example.cs527_rdsmysql.ui.LoginDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.sql.PreparedStatement
-import java.sql.ResultSet
-import java.sql.Statement
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private var rds: RDSConnection = RDSConnection("jdbc:mysql://project1.cabeyzfei4ko.us-east-1.rds.amazonaws.com:3306/Instacart", "", "")
+//    var redshift: RedshiftConnection = RedshiftConnection("", "", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +41,13 @@ class MainActivity : AppCompatActivity() {
         val sqlButton: Button = findViewById<Button>(R.id.executeQueryButton)
         sqlButton.setOnClickListener { view ->
             queryButtonOnClick(view)
+        }
+
+        val resetButton: Button = findViewById(R.id.resetButton)
+        resetButton.setOnClickListener {
+            rds.user = ""
+            rds.pass = ""
+            rds.rdsConnection = null
         }
 
         val navView: BottomNavigationView = binding.navView
@@ -52,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    fun queryButtonOnClick(view: View){
+    fun queryButtonOnClick(view: View) {
 
         AsyncTask.execute {
             val sqlIn: EditText = findViewById(R.id.sqlInEditText)
@@ -91,11 +103,11 @@ class MainActivity : AppCompatActivity() {
 
              */
             /*REDSHIFT SETUP BELOW*/
-            val myAccessKey:String = ""
-            val mySecretKey:String = ""
-            val myUser:String = ""
-            val redshift:RedshiftConnection = RedshiftConnection(myAccessKey,mySecretKey,myUser)
-            val sqlID:String = redshift.sendSQLRequest("SELECT * FROM aisles")
+            val myAccessKey: String = ""
+            val mySecretKey: String = ""
+            val myUser: String = ""
+            val redshift: RedshiftConnection = RedshiftConnection(myAccessKey, mySecretKey, myUser)
+            val sqlID: String = redshift.sendSQLRequest("SELECT * FROM aisles")
             redshift.checkSQLRequest(sqlID)
             val result: ResultObject? = redshift.grabSQLResult(sqlID)
 
@@ -117,5 +129,30 @@ class MainActivity : AppCompatActivity() {
             Log.d("CUSTOM", outString)
             */
         }
+    }
+
+    fun onRadioButtonClicked(view: View) {
+        if (view is RadioButton) {
+            // Is the button now checked?
+            val checked = view.isChecked
+
+            // Check which radio button was clicked
+            when (view.getId()) {
+                R.id.rdsRadioButton ->
+                    if (checked) {
+                        if (rds.rdsConnection == null) {
+                            LoginDialog(rds).show(supportFragmentManager, "LoginFragment")
+                        }
+                    }
+                R.id.redshiftRadioButton ->
+                    if (checked) {
+
+                    }
+            }
+        }
+    }
+
+    fun onResetButtonClicked(view:View) {
+
     }
 }

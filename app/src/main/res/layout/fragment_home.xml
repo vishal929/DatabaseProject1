@@ -21,25 +21,32 @@
         app:layout_constraintTop_toBottomOf="@+id/sqlOutTextView"
         app:layout_constraintVertical_bias="0.892" />
 
-    <RadioButton
-        android:id="@+id/rdsRadioButton"
+    <RadioGroup
+        android:id="@+id/databaseRadioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="32dp"
-        android:text="@string/rds_mysql_text"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView">
 
-    <RadioButton
-        android:id="@+id/redshiftRadioButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="34dp"
-        android:text="@string/redshift_text"
-        app:layout_constraintStart_toEndOf="@+id/rdsRadioButton"
-        app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView" />
+        <RadioButton
+            android:id="@+id/rdsRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rds_mysql_text"
+            android:onClick="onRadioButtonClicked" />
+
+        <RadioButton
+            android:id="@+id/redshiftRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="@string/redshift_text"
+            app:layout_constraintStart_toEndOf="@+id/rdsRadioButton"
+            android:onClick="onRadioButtonClicked" />
+    </RadioGroup>
 
     <Button
         android:id="@+id/executeQueryButton"
@@ -87,7 +94,7 @@
         android:text="@string/sql_input_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/redshiftRadioButton" />
+        app:layout_constraintTop_toBottomOf="@+id/databaseRadioGroup" />
 
     <Button
         android:id="@+id/resetButton"
@@ -97,7 +104,7 @@
         android:text="@string/reset_button_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.396"
-        app:layout_constraintStart_toEndOf="@+id/redshiftRadioButton"
+        app:layout_constraintStart_toEndOf="@id/databaseRadioGroup"
         app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

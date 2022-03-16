@@ -23,7 +23,7 @@ import java.sql.Statement
 
 
 class MainActivity : AppCompatActivity() {
-
+    var dbs = arrayOf<String?>("rds", "redshift")
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         // setting button onclick listener
         val sqlButton: Button = findViewById<Button>(R.id.executeQueryButton)
         sqlButton.setOnClickListener { view ->
@@ -52,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    fun queryButtonOnClick(view: View){
+    fun queryButtonOnClick(view: View) {
 
         AsyncTask.execute {
             val sqlIn: EditText = findViewById(R.id.sqlInEditText)
@@ -94,7 +93,7 @@ class MainActivity : AppCompatActivity() {
             val myAccessKey:String = ""
             val mySecretKey:String = ""
             val myUser:String = ""
-            val redshift:RedshiftConnection = RedshiftConnection(myAccessKey,mySecretKey,myUser)
+            val redshift:RedshiftConnection = RedshiftConnection(myAccessKey, mySecretKey, myUser)
             val sqlID:String = redshift.sendSQLRequest("SELECT * FROM aisles")
             redshift.checkSQLRequest(sqlID)
             val result: ResultObject? = redshift.grabSQLResult(sqlID)

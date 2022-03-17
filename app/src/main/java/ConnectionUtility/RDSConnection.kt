@@ -43,6 +43,15 @@ class RDSConnection (jdbc: String, username: String, password: String){
 
     }
 
+    // closing the connection
+    fun closeConnection(){
+        try{
+           this.rdsConnection!!.close()
+        } catch(e: Exception){
+            Log.d("closingRDS ERROR:", e.message.toString())
+        }
+    }
+
     // executing a query
     fun executeSQL(sql: String){
         // checking if the connection is still valid

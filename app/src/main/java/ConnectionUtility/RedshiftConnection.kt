@@ -36,24 +36,26 @@ class RedshiftConnection(
         return redshiftDataClient
     }
 
-    // grab a list of databases
-    fun getDatabases(dbUser:String, database:String, clusterId:String){
+    // grab a list of schemas
+    fun getSchemas(): ArrayList<String> {
+        val dbUser:String = this.user
+        val database:String = this.database
+        val clusterId: String = this.clusterID
         try {
-            val databasesRequest = ListDatabasesRequest.builder()
+            val schemasRequest = ListSchemasRequest.builder()
                 .clusterIdentifier(clusterId)
                 .dbUser(dbUser)
                 .database(database)
                 .build()
-            val databasesResponse: ListDatabasesResponse =
-                client.listDatabases(databasesRequest)
-            val databases = databasesResponse.databases()
-            for (dbName in databases) {
-                println("The database name is : $dbName")
-            }
+            val schemasResponse = client.listSchemas(schemasRequest)
+            val schemas = ArrayList<String>(schemasResponse.schemas())
+            return schemas
         } catch (e: Exception) {
-            Log.d("redshiftConnection", "Something went wrong with grabbing redshift databases:")
+            Log.d("redshiftConnection", "Something went wrong with grabbing redshift schemas:")
             Log.d("redshiftConnection",e.message.toString())
         }
+        // return empty array list if failure
+        return ArrayList<String>()
     }
 
     // running a data query given a valid connection

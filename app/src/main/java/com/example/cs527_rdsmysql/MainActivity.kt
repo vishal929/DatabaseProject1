@@ -3,25 +3,23 @@ package com.example.cs527_rdsmysql
 import ConnectionUtility.RDSConnection
 import ConnectionUtility.RedshiftConnection
 import ConnectionUtility.ResultObject
-import android.app.ActivityManager
-import android.app.AlertDialog
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.cs527_rdsmysql.databinding.ActivityMainBinding
-import com.example.cs527_rdsmysql.ui.LoginDialog
+import com.example.cs527_rdsmysql.ui.RDSLoginDialog
+import com.example.cs527_rdsmysql.ui.RedshiftLoginDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.sql.PreparedStatement
+import java.sql.ResultSet
+import java.sql.Statement
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private var rds: RDSConnection = RDSConnection("jdbc:mysql://project1.cabeyzfei4ko.us-east-1.rds.amazonaws.com:3306/Instacart", "", "")
-//    var redshift: RedshiftConnection = RedshiftConnection("", "", "")
+    private var redshift: RedshiftConnection = RedshiftConnection("", "", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +46,13 @@ class MainActivity : AppCompatActivity() {
             rds.user = ""
             rds.pass = ""
             rds.rdsConnection = null
+            redshift.user = ""
+            redshift.accessKeyID = ""
+            redshift.secretKey = ""
+            redshift.redshiftConnection = false
+            redshift.client = null
+            val dbRadioGroup: RadioGroup = findViewById(R.id.databaseRadioGroup)
+            dbRadioGroup.clearCheck()
         }
 
         val navView: BottomNavigationView = binding.navView
@@ -103,9 +108,9 @@ class MainActivity : AppCompatActivity() {
 
              */
             /*REDSHIFT SETUP BELOW*/
-            val myAccessKey: String = ""
-            val mySecretKey: String = ""
-            val myUser: String = ""
+            val myAccessKey: String = "AKIAXV2NBU57CCNTWLBX"
+            val mySecretKey: String = "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"
+            val myUser: String = "dtbs527"
             val redshift: RedshiftConnection = RedshiftConnection(myAccessKey, mySecretKey, myUser)
             val sqlID: String = redshift.sendSQLRequest("SELECT * FROM aisles")
             redshift.checkSQLRequest(sqlID)
@@ -141,18 +146,16 @@ class MainActivity : AppCompatActivity() {
                 R.id.rdsRadioButton ->
                     if (checked) {
                         if (rds.rdsConnection == null) {
-                            LoginDialog(rds).show(supportFragmentManager, "LoginFragment")
+                            RDSLoginDialog(rds).show(supportFragmentManager, "LoginFragment")
                         }
                     }
                 R.id.redshiftRadioButton ->
                     if (checked) {
-
+                        if (!redshift.redshiftConnection) {
+                            RedshiftLoginDialog(redshift).show(supportFragmentManager, "LoginFragment")
+                        }
                     }
             }
         }
-    }
-
-    fun onResetButtonClicked(view:View) {
-
     }
 }

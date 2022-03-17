@@ -4,7 +4,6 @@ package ConnectionUtility
 // result set is the object that holds raw sql output as a cursor iteration
 // metadata for result set
 // need the result object for packing our sql queries
-import ConnectionUtility.ResultObject
 import android.util.Log
 import java.sql.*
 
@@ -22,7 +21,7 @@ class RDSConnection (jdbc: String, username: String, password: String){
 
     // connecting to our RDS database via jdbc url, could be connection exception
     fun connect(): Int {
-        var driverConnection : Connection? = null
+        var driverConnection: Connection?
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance()
             driverConnection = DriverManager.getConnection(jdbcURL,user,pass)

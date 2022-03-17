@@ -13,5 +13,9 @@
     <string name="choose_database_string">Choose a Database:</string>
     <string name="username_input_text">Enter username</string>
     <string name="password_input_text">Enter password</string>
+    <string name="access_key_input_text">Enter access key</string>
+    <string name="secret_key_input_text">Enter secret key</string>
+    <string name="connect_failed_message">Connection Failed!</string>
     <string name="connect_button_text">Connect</string>
+
 </resources>

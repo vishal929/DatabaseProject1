@@ -23,15 +23,18 @@ class LoginDialog(var rds: RDSConnection): DialogFragment() {
             val user: EditText = view.findViewById(R.id.rds_username)
             val pass: EditText = view.findViewById(R.id.rds_password)
 
-            rds.user = user.toString()
-            rds.pass = pass.toString()
+            rds.user = user.text.toString()
+            rds.pass = pass.text.toString()
 
             rds.connect()
 
             if (rds.rdsConnection != null) {
                 Log.d("connection", "WE GOT A CONNECTION!")
+                dismiss()
             } else {
                 Log.d("connection", "WE HAVE AN INVALID CONNECTION!")
+                Log.d("connection", "username: " + rds.user.toString())
+                Log.d("connection", "password: " + rds.pass.toString())
                 val textView: TextView = view.findViewById(R.id.connect_fail_message)
                 textView.setTextColor(Color.parseColor("#FF0000"))
             }

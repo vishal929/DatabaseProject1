@@ -139,6 +139,7 @@ class MainActivity : AppCompatActivity() {
                     // populate spinner with redshift schemas
                     val redshift: RedshiftConnection =
                         RedshiftConnection(myAccessKey, mySecretKey, myUser)
+                    redshift.client = redshift.getRedshiftClient()
                     schemas = redshift.getSchemas()
                     // dont need to close connection for redshift, since its request based
                 }
@@ -190,6 +191,9 @@ class MainActivity : AppCompatActivity() {
                 /*REDSHIFT SETUP BELOW*/
 
                 val redshift:RedshiftConnection = RedshiftConnection(myAccessKey,mySecretKey,myUser)
+                // placeholder for valid connection
+                redshift.client = redshift.getRedshiftClient()
+                redshift.redshiftConnection=true
                 val sqlID:String = redshift.sendSQLRequest(query)
                 redshift.checkSQLRequest(sqlID)
                 result  = redshift.grabSQLResult(sqlID)

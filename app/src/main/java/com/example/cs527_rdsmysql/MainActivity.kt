@@ -167,6 +167,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun queryButtonOnClick(view: View){
+        var finalElapsedTime:String = ""
         AsyncTask.execute {
             var result:ResultObject? = null
             val rdsRadio: RadioButton = findViewById(R.id.rdsRadioButton)
@@ -179,7 +180,8 @@ class MainActivity : AppCompatActivity() {
             // grabbing results based on sql text in the sqlInTextView
 
             // starting the timer
-
+            val t1 = System.currentTimeMillis();
+            Log.d("time",t1.toString())
             if (redshiftRadio.isChecked){
                 Log.d("redshiftOrRDS","in redshiftLogic")
                 // run rds query
@@ -189,6 +191,10 @@ class MainActivity : AppCompatActivity() {
                 val sqlID:String = redshift.sendSQLRequest(query)
                 redshift.checkSQLRequest(sqlID)
                 result  = redshift.grabSQLResult(sqlID)
+                if (result == null){
+                    // something went wrong, lets set the elapsed time to error
+                    finalElapsedTime = "error"
+                }
             } else if (rdsRadio.isChecked){
                 Log.d("redshiftOrRDS","in rdsLogic")
                 // run redshift query
@@ -203,18 +209,23 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     Log.d("connection", "WE HAVE AN INVALID CONNECTION!")
                 }
+
+                // picking the selected schema
+                conn.selectSchema(rdsSchema)
+                /*
                 val schemaNames:ArrayList<String> = conn.getSchemas()
                 for (schema in schemaNames){
                     Log.d("schemaPrinting",schema)
                 }
-                var currentSchema:String = conn.getCurrentSchema()
+                */
+                val currentSchema:String = conn.getCurrentSchema()
                 Log.d("currentSchemaCheck",currentSchema)
 
                 // switching schema for fun
-                conn.selectSchema("InstacartCopy")
+                //conn.selectSchema("InstacartCopy")
 
-                currentSchema = conn.getCurrentSchema()
-                Log.d("currentSchemaCheck",currentSchema)
+                //currentSchema = conn.getCurrentSchema()
+                //Log.d("currentSchemaCheck",currentSchema)
 
                 // if successful, we move onto sql query
                 conn.executeSQL(query)
@@ -223,8 +234,25 @@ class MainActivity : AppCompatActivity() {
                 result = conn.grabData(conn.sqlResultSet!!)
                 if (result== null){
                     Log.d("sql","RESULTS IS NULL SOMETHING WENT WRONG!\n");
+                    // setting the elapsed time to be some error string
+                    finalElapsedTime = "error"
                 }
             }
+            // ending the timer
+            val t2=System.currentTimeMillis();
+            Log.d("time",t2.toString())
+            if (finalElapsedTime!="error"){
+                var timeElapsed = t2-t1
+                Log.d("time elapsed ms: ", timeElapsed.toString())
+                val min = (timeElapsed/60000)
+                timeElapsed -= min*6000
+                val sec = (timeElapsed/1000)
+                timeElapsed -= sec*1000
+                val ms = timeElapsed
+                finalElapsedTime = min.toString() + "m " + sec.toString() + "s " + ms.toString() + "ms"
+            }
+
+
             Log.d("queryOnClick","reached end of onclick")
             /*
             val sqlOut: TextView = findViewById(R.id.sqlOutTextView)
@@ -234,5 +262,13 @@ class MainActivity : AppCompatActivity() {
             Log.d("CUSTOM", outString)
             */
         }
+        while (finalElapsedTime.isEmpty()){
+            // wait for results
+        }
+        if (finalElapsedTime!="error"){
+            val elapsedTime:TextView = findViewById(R.id.TimeElapsedTextViewValue)
+            elapsedTime.text = finalElapsedTime
+        }
+
     }
 }

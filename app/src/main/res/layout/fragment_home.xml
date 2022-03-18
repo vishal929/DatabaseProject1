@@ -56,7 +56,7 @@
         android:onClick="queryButtonOnClick"
         android:text="@string/sql_button_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/TimeElapsedTextViewValue"
         app:layout_constraintTop_toBottomOf="@+id/sqlInEditText" />
 
     <TextView
@@ -106,22 +106,41 @@
         android:id="@+id/resetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:text="@string/reset_button_text"
+        app:layout_constraintBottom_toTopOf="@+id/dbSpinner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.396"
-        app:layout_constraintStart_toEndOf="@+id/redshiftRadioButton"
         app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView" />
 
     <Spinner
         android:id="@+id/dbSpinner"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
+        android:layout_width="379dp"
+        android:layout_height="34dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView" />
+
+    <TextView
+        android:id="@+id/TimeElapsedTextView"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="10dp"
+        android:editable="false"
+        android:text="Time Elapsed:"
+        app:layout_constraintBottom_toTopOf="@+id/sqlOutTextView"
+        app:layout_constraintTop_toBottomOf="@+id/sqlInEditText"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="12dp" />
+
+    <TextView
+        android:id="@+id/TimeElapsedTextViewValue"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/sqlOutTextView"
+        app:layout_constraintStart_toEndOf="@+id/TimeElapsedTextView"
+        app:layout_constraintTop_toBottomOf="@+id/sqlInEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

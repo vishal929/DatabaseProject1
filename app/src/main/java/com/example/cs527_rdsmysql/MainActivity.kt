@@ -13,6 +13,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.cs527_rdsmysql.databinding.ActivityMainBinding
+import com.example.cs527_rdsmysql.ui.RDSLoginDialog
+import com.example.cs527_rdsmysql.ui.RedshiftLoginDialog
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.sql.PreparedStatement
+import java.sql.ResultSet
+import java.sql.Statement
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,6 +58,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    private var rds: RDSConnection = RDSConnection("jdbc:mysql://project1.cabeyzfei4ko.us-east-1.rds.amazonaws.com:3306/Instacart", "", "")
+    private var redshift: RedshiftConnection = RedshiftConnection("", "", "")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -64,6 +73,21 @@ class MainActivity : AppCompatActivity() {
             queryButtonOnClick(view)
         }
 
+        val resetButton: Button = findViewById(R.id.resetButton)
+        resetButton.setOnClickListener {
+            rds.user = ""
+            rds.pass = ""
+            rds.rdsConnection = null
+            redshift.user = ""
+            redshift.accessKeyID = ""
+            redshift.secretKey = ""
+            redshift.redshiftConnection = false
+            redshift.client = null
+            val dbRadioGroup: RadioGroup = findViewById(R.id.databaseRadioGroup)
+            dbRadioGroup.clearCheck()
+        }
+
+        val navView: BottomNavigationView = binding.navView
         // setting up onSelect for radioGroup to populate spinner
         val radioButtonGroup: RadioGroup = findViewById(R.id.databaseRadioGroup)
 
@@ -159,6 +183,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    fun queryButtonOnClick(view: View) {
 
     fun queryButtonOnClick(view: View){
         var finalElapsedTime:String = ""
@@ -264,5 +290,28 @@ class MainActivity : AppCompatActivity() {
             elapsedTime.text = finalElapsedTime
         }
 
+    }
+
+    fun onRadioButtonClicked(view: View) {
+        if (view is RadioButton) {
+            // Is the button now checked?
+            val checked = view.isChecked
+
+            // Check which radio button was clicked
+            when (view.getId()) {
+                R.id.rdsRadioButton ->
+                    if (checked) {
+                        if (rds.rdsConnection == null) {
+                            RDSLoginDialog(rds).show(supportFragmentManager, "LoginFragment")
+                        }
+                    }
+                R.id.redshiftRadioButton ->
+                    if (checked) {
+                        if (!redshift.redshiftConnection) {
+                            RedshiftLoginDialog(redshift).show(supportFragmentManager, "LoginFragment")
+                        }
+                    }
+            }
+        }
     }
 }

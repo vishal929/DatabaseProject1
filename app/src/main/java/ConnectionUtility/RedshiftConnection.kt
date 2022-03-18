@@ -1,22 +1,30 @@
 package ConnectionUtility
 
+import android.os.AsyncTask
 import android.util.Log
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
 import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.redshiftdata.RedshiftDataClient
 import software.amazon.awssdk.services.redshiftdata.model.*
+import java.security.KeyStore
+import java.sql.Connection
 
 
 class RedshiftConnection(
     var accessKeyID: String, var secretKey:String, var user:String){
     // nullable connection
-    var client: RedshiftDataClient = getRedshiftClient()
+    // var client: RedshiftDataClient = getRedshiftClient()
+    var client: RedshiftDataClient? = null
     // setting default cluster ID for our connection
     var clusterID:String = "redshift-cluster-1"
     // setting a database to query from initially
     var database:String = "dev"
+    // if the credentials are correct, the connection should be valid and the value is true
+    var redshiftConnection: Boolean = false
 
 
     // getting a client builder object
@@ -36,6 +44,23 @@ class RedshiftConnection(
         return redshiftDataClient
     }
 
+    fun testConnection():Boolean{
+        runBlocking{
+            redshiftConnection = false
+            try {
+                client = getRedshiftClient()
+                redshiftConnection = true
+            } catch (e: Exception) {
+                Log.d("RedshiftSqlRequest", "Error with getting redshift client:")
+                Log.d("RedshiftSqlRequest", e.message.toString())
+            }
+        }
+        return redshiftConnection
+    }
+
+    // grab a list of databases
+    fun getDatabases(dbUser:String, database:String, clusterId:String): Boolean{
+        if(client == null) return false
     // grab a list of schemas
     fun getSchemas(): ArrayList<String> {
         val dbUser:String = this.user
@@ -60,6 +85,7 @@ class RedshiftConnection(
 
     // running a data query given a valid connection
     fun sendSQLRequest(sqlQuery:String):String{
+        if(client == null) return ""
         try {
             val statementRequest = ExecuteStatementRequest.builder()
                 .clusterIdentifier(clusterID)
@@ -68,7 +94,7 @@ class RedshiftConnection(
                 .sql(sqlQuery)
                 .build()
             val response: ExecuteStatementResponse =
-                client.executeStatement(statementRequest)
+                client!!.executeStatement(statementRequest)
             return response.id()
         } catch (e: Exception) {
             Log.d("RedshiftSqlRequest", "Error with sending request to server:")
@@ -80,6 +106,7 @@ class RedshiftConnection(
 
     // checking the sql request
     fun checkSQLRequest(sqlID:String){
+        if(!redshiftConnection) return
         try {
             val statementRequest = DescribeStatementRequest.builder()
                 .id(sqlID)
@@ -90,7 +117,7 @@ class RedshiftConnection(
             var status = ""
             while (!finished) {
                 val response: DescribeStatementResponse =
-                    client.describeStatement(statementRequest)
+                    client!!.describeStatement(statementRequest)
                 status = response.statusAsString()
                 Log.d("RedshiftSQLCheck","Sql request status:")
                 Log.d("RedshiftSQLCheck","...$status")
@@ -108,6 +135,7 @@ class RedshiftConnection(
 
     // grabbing sql request results
     fun grabSQLResult(sqlID:String): ResultObject?{
+        if(client == null) return null
         // grab records as metadata object result set
         var results:ResultObject? = null
         try {
@@ -115,7 +143,7 @@ class RedshiftConnection(
                 .id(sqlID)
                 .build()
             val response: GetStatementResultResponse =
-                client.getStatementResult(resultRequest)
+                client!!.getStatementResult(resultRequest)
 
             // Iterate through the List element where each element is a List object.
             val dataList:List<List<Field>> = response.records()

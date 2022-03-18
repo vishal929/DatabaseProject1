@@ -58,9 +58,6 @@ class RedshiftConnection(
         return redshiftConnection
     }
 
-    // grab a list of databases
-    fun getDatabases(dbUser:String, database:String, clusterId:String): Boolean{
-        if(client == null) return false
     // grab a list of schemas
     fun getSchemas(): ArrayList<String> {
         val dbUser:String = this.user
@@ -72,7 +69,7 @@ class RedshiftConnection(
                 .dbUser(dbUser)
                 .database(database)
                 .build()
-            val schemasResponse = client.listSchemas(schemasRequest)
+            val schemasResponse = client!!.listSchemas(schemasRequest)
             val schemas = ArrayList<String>(schemasResponse.schemas())
             return schemas
         } catch (e: Exception) {

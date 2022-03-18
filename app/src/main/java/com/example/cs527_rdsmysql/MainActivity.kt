@@ -14,7 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.cs527_rdsmysql.databinding.ActivityMainBinding
 import com.example.cs527_rdsmysql.ui.RDSLoginDialog
-import com.example.cs527_rdsmysql.ui.RedshiftLoginDialog
+//import com.example.cs527_rdsmysql.ui.RedshiftLoginDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.sql.PreparedStatement
 import java.sql.ResultSet
@@ -37,22 +37,6 @@ val myUser:String = "dtbs527"
 val jdbcUrl = "jdbc:mysql://project1.cabeyzfei4ko.us-east-1.rds.amazonaws.com:3306/Instacart"
 val user = "dtbs527"
 val pass = "Nosqldatabase"
-
-// spinner string arrays
-var rdsSpinnerArray:ArrayList<String> = ArrayList<String>()
-var redshiftSpinnerArray:ArrayList<String> = ArrayList<String>()
-
-// better generic use of asynchronous task
-fun <R> CoroutineScope.executeAsyncTask(
-    doInBackground: () -> R,
-    onPostExecute: (R) -> Unit
-) = launch {
-    val result = withContext(Dispatchers.IO) {
-        // do async stuff not on main thread
-        doInBackground()
-    }
-    onPostExecute(result)
-}
 
 class MainActivity : AppCompatActivity() {
 
@@ -87,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             dbRadioGroup.clearCheck()
         }
 
-        val navView: BottomNavigationView = binding.navView
+        //val navView: BottomNavigationView = binding.navView
         // setting up onSelect for radioGroup to populate spinner
         val radioButtonGroup: RadioGroup = findViewById(R.id.databaseRadioGroup)
 
@@ -183,8 +167,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    fun queryButtonOnClick(view: View) {
 
     fun queryButtonOnClick(view: View){
         var finalElapsedTime:String = ""
@@ -308,7 +290,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.redshiftRadioButton ->
                     if (checked) {
                         if (!redshift.redshiftConnection) {
-                            RedshiftLoginDialog(redshift).show(supportFragmentManager, "LoginFragment")
+                            //RedshiftLoginDialog(redshift).show(supportFragmentManager, "LoginFragment")
+                            val test = 1
                         }
                     }
             }

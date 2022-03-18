@@ -6,39 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/linearLayout"
+        android:layout_width="329dp"
+        android:layout_height="193dp"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/executeQueryButton">
 
         <ScrollView
             android:id="@+id/scrollView1"
             android:layout_width="match_parent"
-            android:layout_height="196dp"
+            android:layout_height="match_parent"
             android:background="#FFFFFF"
-            android:translationY="400dp"
-            app:layout_constraintBottom_toTopOf="@+id/chooseSourceTextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:translationY="0dp">
 
             <HorizontalScrollView
                 android:id="@+id/tblChats"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <RelativeLayout
                     android:id="@+id/RelativeLayout1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:orientation="vertical">
 
                     <TableLayout
                         android:id="@+id/table_main"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_centerHorizontal="true">
 
                     </TableLayout>
@@ -47,12 +48,10 @@
         </ScrollView>
     </LinearLayout>
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/speechToTextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
         android:clickable="true"
         android:contentDescription="@string/Speech_Text"
         android:src="@android:drawable/ic_btn_speak_now"
@@ -60,8 +59,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.101"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sqlOutTextView"
-        app:layout_constraintVertical_bias="0.892" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <RadioGroup
         android:id="@+id/databaseRadioGroup"
@@ -100,15 +98,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/TimeElapsedTextViewValue"
         app:layout_constraintTop_toBottomOf="@+id/sqlInEditText" />
-
-    <TextView
-        android:id="@+id/sqlOutTextView"
-        android:layout_width="387dp"
-        android:layout_height="170dp"
-        android:text="@string/sql_output_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/executeQueryButton" />
 
     <TextView
         android:id="@+id/chooseSourceTextView"
@@ -168,10 +157,8 @@
         android:id="@+id/TimeElapsedTextView"
         android:layout_width="100dp"
         android:layout_height="20dp"
-        android:layout_marginStart="10dp"
         android:editable="false"
         android:text="Time Elapsed:"
-        app:layout_constraintBottom_toTopOf="@+id/sqlOutTextView"
         app:layout_constraintTop_toBottomOf="@+id/sqlInEditText"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="12dp" />
@@ -181,7 +168,6 @@
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/sqlOutTextView"
         app:layout_constraintStart_toEndOf="@+id/TimeElapsedTextView"
         app:layout_constraintTop_toBottomOf="@+id/sqlInEditText" />
 

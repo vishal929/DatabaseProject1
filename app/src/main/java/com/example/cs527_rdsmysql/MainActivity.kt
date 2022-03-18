@@ -27,6 +27,7 @@ import android.graphics.Color
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.*
+import java.lang.Integer.max
 
 
 // storing default values for each connection, onSelect for spinner will switch these
@@ -280,6 +281,33 @@ class MainActivity : AppCompatActivity() {
                     }
                     stk.addView(tbrow)
                     // Table Data
+                    var rowNum:Int = 0
+                    // we have as many rows as values in a column
+                    var numRows:Int = 0
+                    if (result.intColumns.size>0) numRows = result.intColumns[0].size
+                    if (result.stringColumns.size>0) numRows = max(numRows,result.stringColumns[0].size)
+                    while (rowNum!=numRows){
+                        val dataRow = TableRow(this)
+                        for (j in 0 until result.indices.size){
+                            val textViewInsert = TextView(this)
+                           // check if its an int or string type
+                            if (result.nameType[j]){
+                                // this is a string
+                                textViewInsert.text = (result.stringColumns[result.indices[j]])[rowNum]
+                            } else {
+                                // must be an int
+                                textViewInsert.text = result.intColumns[result.indices[j]][rowNum].toString()
+                            }
+                            // add textView to the dataRow
+                            dataRow.addView(textViewInsert)
+                        }
+                        // add row to the table
+                        stk.addView(dataRow)
+                        // increment row count
+                        rowNum++;
+                    }
+
+                    /*
                     var i:Int = 0
 
                     if (result.stringColumns.isEmpty()) {
@@ -317,6 +345,7 @@ class MainActivity : AppCompatActivity() {
                             stk.addView(tbrowIntData)
                         }
                     }
+                     */
 
                 }
             }

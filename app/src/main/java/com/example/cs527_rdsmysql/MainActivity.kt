@@ -243,63 +243,7 @@ class MainActivity : AppCompatActivity() {
 
                 // we move onto grabbing results
                 result = conn.grabData(conn.sqlResultSet!!)
-                runOnUiThread {
-                    // Stuff that updates the UI
-                    val stk = findViewById(R.id.table_main) as TableLayout
-                    val tbrow = TableRow(this)
-                    stk.removeAllViews()
-                    // Table Headers
-                    result?.colNames?.forEach { i ->
-                        val textView = TextView(this)
-                        textView.setText(i)
-                        textView.setTextColor(Color.BLACK)
-                        textView.gravity = Gravity.CENTER
-                        tbrow.addView(textView)
-                    }
-                    stk.addView(tbrow)
-                    // Table Data
-                    var i:Int = 0
 
-                    if (result != null) {
-                        // For Data without stringColumns
-                        if (result.stringColumns.isEmpty()) {
-                            result?.intColumns?.forEach { k ->
-                                val tbrowIntData = TableRow(this)
-                                for (l in k){
-                                    val tvInt = TextView(this)
-                                    tvInt.setText(l.toString())
-                                    tvInt.setTextColor(Color.BLACK)
-                                    tvInt.gravity = Gravity.CENTER
-                                    tvInt.setBackgroundColor(Color.LTGRAY)
-                                    tbrowIntData.addView(tvInt)
-                                }
-                                stk.addView(tbrowIntData)
-                            }
-                        } else{
-                            result?.intColumns?.first()?.forEach { k ->
-                                val tbrowIntData = TableRow(this)
-                                val tvInt = TextView(this)
-                                val tvStr = TextView(this)
-                                while (i < result.stringColumns.first().count()) {
-                                    tvInt.setText(k.toString())
-                                    tvStr.setText(result.stringColumns.first()[i].toString())
-                                    i += 1
-                                    break
-                                }
-                                tvInt.setTextColor(Color.BLACK)
-                                tvInt.gravity = Gravity.CENTER
-                                tvStr.setTextColor(Color.BLACK)
-                                tvStr.gravity = Gravity.CENTER
-                                tvInt.setBackgroundColor(Color.LTGRAY)
-                                tvStr.setBackgroundColor(Color.GRAY)
-                                tbrowIntData.addView(tvInt)
-                                tbrowIntData.addView(tvStr)
-                                stk.addView(tbrowIntData)
-                            }
-                        }
-                    }
-
-                }
                 if (result== null){
                     Log.d("sql","RESULTS IS NULL SOMETHING WENT WRONG!\n");
                     // setting the elapsed time to be some error string
@@ -318,6 +262,63 @@ class MainActivity : AppCompatActivity() {
                 timeElapsed -= sec*1000
                 val ms = timeElapsed
                 finalElapsedTime = min.toString() + "m " + sec.toString() + "s " + ms.toString() + "ms"
+            }
+
+            if (result!=null){
+                runOnUiThread {
+                    // Stuff that updates the UI
+                    val stk = findViewById(R.id.table_main) as TableLayout
+                    val tbrow = TableRow(this)
+                    stk.removeAllViews()
+                    // Table Headers
+                    result?.colNames?.forEach { i ->
+                        val textView = TextView(this)
+                        textView.setText(i)
+                        textView.setTextColor(Color.BLACK)
+                        textView.gravity = Gravity.CENTER
+                        tbrow.addView(textView)
+                    }
+                    stk.addView(tbrow)
+                    // Table Data
+                    var i:Int = 0
+
+                    if (result.stringColumns.isEmpty()) {
+                        result?.intColumns?.forEach { k ->
+                            val tbrowIntData = TableRow(this)
+                            for (l in k){
+                                val tvInt = TextView(this)
+                                tvInt.setText(l.toString())
+                                tvInt.setTextColor(Color.BLACK)
+                                tvInt.gravity = Gravity.CENTER
+                                tvInt.setBackgroundColor(Color.LTGRAY)
+                                tbrowIntData.addView(tvInt)
+                            }
+                            stk.addView(tbrowIntData)
+                        }
+                    } else{
+                        result?.intColumns?.first()?.forEach { k ->
+                            val tbrowIntData = TableRow(this)
+                            val tvInt = TextView(this)
+                            val tvStr = TextView(this)
+                            while (i < result.stringColumns.first().count()) {
+                                tvInt.setText(k.toString())
+                                tvStr.setText(result.stringColumns.first()[i].toString())
+                                i += 1
+                                break
+                            }
+                            tvInt.setTextColor(Color.BLACK)
+                            tvInt.gravity = Gravity.CENTER
+                            tvStr.setTextColor(Color.BLACK)
+                            tvStr.gravity = Gravity.CENTER
+                            tvInt.setBackgroundColor(Color.LTGRAY)
+                            tvStr.setBackgroundColor(Color.GRAY)
+                            tbrowIntData.addView(tvInt)
+                            tbrowIntData.addView(tvStr)
+                            stk.addView(tbrowIntData)
+                        }
+                    }
+
+                }
             }
 
 

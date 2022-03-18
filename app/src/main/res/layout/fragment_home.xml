@@ -118,4 +118,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView" />
 
+    <TextView
+        android:id="@+id/TimeElapsedTextView"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="10dp"
+        android:editable="false"
+        android:text="Time Elapsed:"
+        app:layout_constraintBottom_toTopOf="@+id/sqlOutTextView"
+        app:layout_constraintTop_toBottomOf="@+id/sqlInEditText"
+        tools:layout_editor_absoluteX="12dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/TimeElapsedTextViewValue"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/sqlOutTextView"
+        app:layout_constraintStart_toEndOf="@+id/TimeElapsedTextView"
+        app:layout_constraintTop_toBottomOf="@+id/sqlInEditText" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

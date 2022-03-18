@@ -54,6 +54,8 @@ class MainActivity : AppCompatActivity() {
 
     fun queryButtonOnClick(view: View){
 
+        val t1 = System.currentTimeMillis();
+
         AsyncTask.execute {
             val sqlIn: EditText = findViewById(R.id.sqlInEditText)
             Log.d("sqlINTextBox", sqlIn.text.toString())
@@ -117,5 +119,11 @@ class MainActivity : AppCompatActivity() {
             Log.d("CUSTOM", outString)
             */
         }
+        val t2=System.currentTimeMillis();
+        val timeElapsed = t2-t1
+        val min = (timeElapsed/1000)/60
+        val sec = (timeElapsed/1000)%60
+        val elapsedTime:TextView = findViewById(R.id.TimeElapsedTextViewValue)
+        elapsedTime.text = min.toString() + "m " + sec + "s"
     }
 }

@@ -80,7 +80,7 @@ class ResultObject(){
                     metaDataHelper("reordered",false)
                 }
                 else -> {
-                    Log.d("ResultObjectDebug", "Given element not found!")
+                    Log.d("ResultObjectDebug", "Given element:" + name + " not found!")
                 }
             }
         }
@@ -95,7 +95,7 @@ class ResultObject(){
                 return nameType[i]
             }
         }
-        throw NoSuchFieldException("field name does not exist")
+        throw NoSuchFieldException("field name:" + name + " does not exist")
     }
 
    // returns True if a string, false if int
@@ -104,7 +104,7 @@ class ResultObject(){
     fun getTypeFromColNum(colNum:Int): Boolean{
        val newIndex = colNum-1
         if (newIndex < nameType.size) return nameType[newIndex]
-        throw IndexOutOfBoundsException("column number is out of range when checking column type")
+        throw IndexOutOfBoundsException("column number:" + newIndex.toString()+" is out of range when checking column type")
     }
 
    // adds integer data to a given column
@@ -115,7 +115,7 @@ class ResultObject(){
         if (newIndex < indices.size) {
             intColumns[indices[newIndex]].add(value)
         } else {
-            throw IndexOutOfBoundsException("column number is out of range for adding an integer")
+            throw IndexOutOfBoundsException("column number:" + newIndex.toString()+"  is out of range for adding an integer")
         }
     }
 
@@ -127,7 +127,7 @@ class ResultObject(){
        if (newIndex < indices.size) {
            stringColumns[indices[newIndex]].add(value)
        } else {
-           throw IndexOutOfBoundsException("column number is out of range for adding a string")
+           throw IndexOutOfBoundsException("column number:" + newIndex.toString() + " is out of range for adding a string")
        }
     }
 }

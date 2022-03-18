@@ -16,9 +16,6 @@ import com.example.cs527_rdsmysql.databinding.ActivityMainBinding
 import com.example.cs527_rdsmysql.ui.RDSLoginDialog
 //import com.example.cs527_rdsmysql.ui.RedshiftLoginDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.sql.PreparedStatement
-import java.sql.ResultSet
-import java.sql.Statement
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

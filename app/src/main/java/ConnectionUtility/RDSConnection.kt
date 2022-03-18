@@ -102,12 +102,12 @@ class RDSConnection (jdbc: String, username: String, password: String){
                     if (result.getTypeFromColNum(i)){
                         // we have a string
                         val stringData: String = rs.getString(i)
-                        Log.d("stringData", stringData)
+                        //Log.d("stringData", stringData)
                         result.addStrData(i,stringData)
                     } else{
                         // we have an int
                         val intData: Int = rs.getInt(i)
-                        Log.d("intData", intData.toString())
+                        //Log.d("intData", intData.toString())
                         result.addIntData(i,intData)
                     }
                 }

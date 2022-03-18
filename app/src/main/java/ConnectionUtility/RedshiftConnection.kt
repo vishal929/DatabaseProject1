@@ -140,12 +140,12 @@ class RedshiftConnection(
                          // we have a string
                          val value = field.stringValue()
                          results.addStrData(i+1,value)
-                         Log.d("SQLRESULT","Got field: $value")
+                         //Log.d("SQLRESULT","Got field: $value")
                      } else {
                         // we have an integer
                          val intVal = field.longValue()
                          results.addIntData(i+1,intVal.toInt())
-                         Log.d("SQLResult,","Got field: $intVal")
+                         //Log.d("SQLResult,","Got field: $intVal")
                      }
 
 

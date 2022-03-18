@@ -22,7 +22,7 @@
         app:layout_constraintVertical_bias="0.892" />
 
     <RadioGroup
-        android:id="@+id/radioButtonGroup"
+        android:id="@+id/databaseRadioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

@@ -8,21 +8,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
-import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.example.cs527_rdsmysql.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.sql.PreparedStatement
-import java.sql.ResultSet
-import java.sql.Statement
 
 // storing default values for each connection, onSelect for spinner will switch these
 var rdsSchema:String = "Instacart"
@@ -71,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // setting up onSelect for radioGroup to populate spinner
-        val radioButtonGroup: RadioGroup = findViewById(R.id.radioButtonGroup)
+        val radioButtonGroup: RadioGroup = findViewById(R.id.databaseRadioGroup)
 
         radioButtonGroup.setOnCheckedChangeListener { radioGroup, i ->
             radioGroupOnChange(radioGroup,i)

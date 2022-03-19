@@ -9,43 +9,54 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="329dp"
-        android:layout_height="193dp"
+        android:layout_width="385dp"
+        android:layout_height="286dp"
         android:background="@color/white"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/executeQueryButton">
+        android:padding="10dp"
+        android:showDividers="middle"
+        app:layout_constraintTop_toBottomOf="@+id/executeQueryButton"
+        tools:layout_editor_absoluteX="13dp">
 
-        <ScrollView
-            android:id="@+id/scrollView1"
+        <HorizontalScrollView
+            android:id="@+id/tblChats"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#FFFFFF"
-            android:translationY="0dp">
+            android:layout_height="match_parent">
 
-            <HorizontalScrollView
-                android:id="@+id/tblChats"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/LinearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <RelativeLayout
-                    android:id="@+id/RelativeLayout1"
+                <TableLayout
+                    android:id="@+id/headerTable"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:stretchColumns="*">
+                </TableLayout>
+
+                <ScrollView
+                    android:id="@+id/scrollView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:translationY="0dp">
 
                     <TableLayout
                         android:id="@+id/table_main"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerHorizontal="true">
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/activity_horizontal_margin"
+                        android:stretchColumns="*">
 
                     </TableLayout>
-                </RelativeLayout>
-            </HorizontalScrollView>
-        </ScrollView>
+                </ScrollView>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -122,8 +133,8 @@
 
     <EditText
         android:id="@+id/sqlInEditText"
-        android:layout_width="387dp"
-        android:layout_height="wrap_content"
+        android:layout_width="386dp"
+        android:layout_height="56dp"
         android:layout_marginTop="10dp"
         android:editable="true"
         android:importantForAutofill="no"

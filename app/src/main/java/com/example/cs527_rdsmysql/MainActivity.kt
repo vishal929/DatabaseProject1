@@ -1,5 +1,6 @@
 package com.example.cs527_rdsmysql
 
+//import com.example.cs527_rdsmysql.ui.RedshiftLoginDialog
 import ConnectionUtility.RDSConnection
 import ConnectionUtility.RedshiftConnection
 import ConnectionUtility.ResultObject
@@ -10,30 +11,13 @@ import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.marginRight
-import androidx.core.view.setPadding
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.cs527_rdsmysql.databinding.ActivityMainBinding
 import com.example.cs527_rdsmysql.ui.RDSLoginDialog
-//import com.example.cs527_rdsmysql.ui.RedshiftLoginDialog
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.sql.PreparedStatement
-import java.sql.ResultSet
-import java.sql.Statement
-import android.graphics.Color
-import android.view.Gravity
-import android.view.ViewGroup
-import android.widget.*
-import java.lang.Integer.max
 
 
 // storing default values for each connection, onSelect for spinner will switch these
@@ -275,73 +259,74 @@ class MainActivity : AppCompatActivity() {
             if (result!=null){
                 runOnUiThread {
                     // Stuff that updates the UI
-                    val stk = findViewById(R.id.table_main) as TableLayout
+                    //val headerTableRow = findViewById(R.id.table_header_row) as TableRow
                     val tbrow = TableRow(this)
+                    // clearing the current table headers
+                    //headerTableRow.removeAllViews()
+                    val stk = findViewById(R.id.table_main) as TableLayout
+                    val headerTable = findViewById<TableLayout>(R.id.headerTable)
                     stk.removeAllViews()
+                    headerTable.removeAllViews()
 
 
                     // Table Headers
-                    result?.colNames?.forEach { i ->
+                    result.colNames.forEach { i ->
                         val textView = TextView(this)
+                        //val params = TableRow.LayoutParams(1, TableRow.LayoutParams.MATCH_PARENT, 1f)
+                        //textView.setLayoutParams(params)
                         textView.setText(i)
                         textView.setTextColor(Color.BLACK)
                         textView.gravity = Gravity.CENTER
                         tbrow.addView(textView)
+                        //headerTableRow.addView(textView)
                     }
                     stk.addView(tbrow)
+                    //headerTable.addView(tbHeader)
                     // Table Data
-                    var i:Int = 0
-
-                    if (result != null) {
-                        // For Data without stringColumns
-                        runOnUiThread {
-                            // Stuff that updates the UI
-                            val stk = findViewById(R.id.table_main) as TableLayout
-                            val tbrow = TableRow(this)
-                            stk.removeAllViews()
-                            // Table Headers
-                            result?.colNames?.forEach { i ->
-                                val textView = TextView(this)
-                                textView.setText(i)
-                                textView.setTextColor(Color.BLACK)
-                                textView.setPadding(10, 10, 10, 10)
-                                textView.gravity = Gravity.CENTER
-                                tbrow.addView(textView)
+                    var rowNum: Int = 0
+                    // we have as many rows as values in a column
+                    var numRows: Int = 0
+                    if (result.intColumns.size > 0) numRows = result.intColumns[0].size
+                    if (result.stringColumns.size > 0) numRows =
+                        Integer.max(numRows, result.stringColumns[0].size)
+                    while (rowNum != numRows) {
+                        val dataRow = TableRow(this)
+                        for (j in 0 until result.indices.size) {
+                            val textViewInsert = TextView(this)
+                            // check if its an int or string type
+                            if (result.nameType[j]) {
+                                // this is a string
+                                textViewInsert.text =
+                                    (result.stringColumns[result.indices[j]])[rowNum]
+                            } else {
+                                // must be an int
+                                textViewInsert.text =
+                                    result.intColumns[result.indices[j]][rowNum].toString()
                             }
-                            stk.addView(tbrow)
-                            // Table Data
-                            var rowNum: Int = 0
-                            // we have as many rows as values in a column
-                            var numRows: Int = 0
-                            if (result.intColumns.size > 0) numRows = result.intColumns[0].size
-                            if (result.stringColumns.size > 0) numRows =
-                                Integer.max(numRows, result.stringColumns[0].size)
-                            while (rowNum != numRows) {
-                                val dataRow = TableRow(this)
-                                for (j in 0 until result.indices.size) {
-                                    val textViewInsert = TextView(this)
-                                    // check if its an int or string type
-                                    if (result.nameType[j]) {
-                                        // this is a string
-                                        textViewInsert.text =
-                                            (result.stringColumns[result.indices[j]])[rowNum]
-                                    } else {
-                                        // must be an int
-                                        textViewInsert.text =
-                                            result.intColumns[result.indices[j]][rowNum].toString()
-                                    }
-                                    // add textView to the dataRow
-                                    textViewInsert.setTextColor(Color.BLACK)
-                                    textViewInsert.gravity = Gravity.CENTER
-                                    dataRow.addView(textViewInsert)
-                                }
-                                // add row to the table
-                                stk.addView(dataRow)
-                                // increment row count
-                                rowNum++;
-                            }
+                            // add textView to the dataRow
+                            textViewInsert.setTextColor(Color.BLACK)
+                            textViewInsert.gravity = Gravity.CENTER
+                            dataRow.addView(textViewInsert)
                         }
+                        // add row to the table
+                        stk.addView(dataRow)
+                        // increment row count
+                        rowNum++;
                     }
+
+                    // setting the first row of the data table
+                    // as the header row (should not scroll vertically)
+
+                    val headerRow = stk.getChildAt(0)
+
+                    // removing the view from the tablelayout
+                    stk.removeViewAt(0)
+
+                    // adding view to the header table(not scrollable vertically)
+                    val layoutParams = stk.getChildAt(0).layoutParams
+                    headerTable.addView(headerRow)
+                    headerTable.getChildAt(0).layoutParams = layoutParams
+
                 }
             }
 

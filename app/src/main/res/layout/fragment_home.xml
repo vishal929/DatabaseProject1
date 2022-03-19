@@ -127,7 +127,7 @@
         android:layout_marginTop="10dp"
         android:editable="true"
         android:importantForAutofill="no"
-        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
         android:text="@string/sql_input_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

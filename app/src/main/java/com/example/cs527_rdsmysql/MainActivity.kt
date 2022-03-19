@@ -3,12 +3,18 @@ package com.example.cs527_rdsmysql
 import ConnectionUtility.RDSConnection
 import ConnectionUtility.RedshiftConnection
 import ConnectionUtility.ResultObject
+import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.marginRight
+import androidx.core.view.setPadding
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -184,6 +190,7 @@ class MainActivity : AppCompatActivity() {
             val sqlIn: EditText = findViewById(R.id.sqlInEditText)
             val query:String = sqlIn.text.toString()
             // setting a type for result
+            sqlIn.movementMethod = ScrollingMovementMethod()
             Log.d("sqlINTextBox", query)
             // run your queries here!
             // grabbing results based on sql text in the sqlInTextView
@@ -271,6 +278,8 @@ class MainActivity : AppCompatActivity() {
                     val stk = findViewById(R.id.table_main) as TableLayout
                     val tbrow = TableRow(this)
                     stk.removeAllViews()
+
+
                     // Table Headers
                     result?.colNames?.forEach { i ->
                         val textView = TextView(this)
@@ -281,72 +290,58 @@ class MainActivity : AppCompatActivity() {
                     }
                     stk.addView(tbrow)
                     // Table Data
-                    var rowNum:Int = 0
-                    // we have as many rows as values in a column
-                    var numRows:Int = 0
-                    if (result.intColumns.size>0) numRows = result.intColumns[0].size
-                    if (result.stringColumns.size>0) numRows = max(numRows,result.stringColumns[0].size)
-                    while (rowNum!=numRows){
-                        val dataRow = TableRow(this)
-                        for (j in 0 until result.indices.size){
-                            val textViewInsert = TextView(this)
-                           // check if its an int or string type
-                            if (result.nameType[j]){
-                                // this is a string
-                                textViewInsert.text = (result.stringColumns[result.indices[j]])[rowNum]
-                            } else {
-                                // must be an int
-                                textViewInsert.text = result.intColumns[result.indices[j]][rowNum].toString()
-                            }
-                            // add textView to the dataRow
-                            dataRow.addView(textViewInsert)
-                        }
-                        // add row to the table
-                        stk.addView(dataRow)
-                        // increment row count
-                        rowNum++;
-                    }
-
-                    /*
                     var i:Int = 0
 
-                    if (result.stringColumns.isEmpty()) {
-                        result?.intColumns?.forEach { k ->
-                            val tbrowIntData = TableRow(this)
-                            for (l in k){
-                                val tvInt = TextView(this)
-                                tvInt.setText(l.toString())
-                                tvInt.setTextColor(Color.BLACK)
-                                tvInt.gravity = Gravity.CENTER
-                                tvInt.setBackgroundColor(Color.LTGRAY)
-                                tbrowIntData.addView(tvInt)
+                    if (result != null) {
+                        // For Data without stringColumns
+                        runOnUiThread {
+                            // Stuff that updates the UI
+                            val stk = findViewById(R.id.table_main) as TableLayout
+                            val tbrow = TableRow(this)
+                            stk.removeAllViews()
+                            // Table Headers
+                            result?.colNames?.forEach { i ->
+                                val textView = TextView(this)
+                                textView.setText(i)
+                                textView.setTextColor(Color.BLACK)
+                                textView.setPadding(10, 10, 10, 10)
+                                textView.gravity = Gravity.CENTER
+                                tbrow.addView(textView)
                             }
-                            stk.addView(tbrowIntData)
-                        }
-                    } else{
-                        result?.intColumns?.first()?.forEach { k ->
-                            val tbrowIntData = TableRow(this)
-                            val tvInt = TextView(this)
-                            val tvStr = TextView(this)
-                            while (i < result.stringColumns.first().count()) {
-                                tvInt.setText(k.toString())
-                                tvStr.setText(result.stringColumns.first()[i].toString())
-                                i += 1
-                                break
+                            stk.addView(tbrow)
+                            // Table Data
+                            var rowNum: Int = 0
+                            // we have as many rows as values in a column
+                            var numRows: Int = 0
+                            if (result.intColumns.size > 0) numRows = result.intColumns[0].size
+                            if (result.stringColumns.size > 0) numRows =
+                                Integer.max(numRows, result.stringColumns[0].size)
+                            while (rowNum != numRows) {
+                                val dataRow = TableRow(this)
+                                for (j in 0 until result.indices.size) {
+                                    val textViewInsert = TextView(this)
+                                    // check if its an int or string type
+                                    if (result.nameType[j]) {
+                                        // this is a string
+                                        textViewInsert.text =
+                                            (result.stringColumns[result.indices[j]])[rowNum]
+                                    } else {
+                                        // must be an int
+                                        textViewInsert.text =
+                                            result.intColumns[result.indices[j]][rowNum].toString()
+                                    }
+                                    // add textView to the dataRow
+                                    textViewInsert.setTextColor(Color.BLACK)
+                                    textViewInsert.gravity = Gravity.CENTER
+                                    dataRow.addView(textViewInsert)
+                                }
+                                // add row to the table
+                                stk.addView(dataRow)
+                                // increment row count
+                                rowNum++;
                             }
-                            tvInt.setTextColor(Color.BLACK)
-                            tvInt.gravity = Gravity.CENTER
-                            tvStr.setTextColor(Color.BLACK)
-                            tvStr.gravity = Gravity.CENTER
-                            tvInt.setBackgroundColor(Color.LTGRAY)
-                            tvStr.setBackgroundColor(Color.GRAY)
-                            tbrowIntData.addView(tvInt)
-                            tbrowIntData.addView(tvStr)
-                            stk.addView(tbrowIntData)
                         }
                     }
-                     */
-
                 }
             }
 

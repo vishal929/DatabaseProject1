@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         val clearButton = findViewById<Button>(R.id.clearButton)
         clearButton.setOnClickListener { view ->
             val sqlInText = findViewById<EditText>(R.id.sqlInEditText)
-            sqlInText.setText("Type SQL Query Here")
+            sqlInText.setText("")
         }
 
         // setting button onclick listener

@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="385dp"
+        android:layout_width="match_parent"
         android:layout_height="286dp"
         android:background="@color/white"
         android:orientation="vertical"
@@ -77,7 +77,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/dbSpinner"
-        app:layout_constraintEnd_toStartOf="@+id/resetButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView">
 
@@ -102,20 +103,18 @@
         android:id="@+id/executeQueryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
         android:onClick="queryButtonOnClick"
         android:text="@string/sql_button_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/TimeElapsedTextViewValue"
         app:layout_constraintTop_toBottomOf="@+id/sqlInEditText" />
 
     <TextView
         android:id="@+id/chooseSourceTextView"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
         android:clickable="false"
         android:contextClickable="false"
         android:editable="false"
@@ -125,20 +124,23 @@
         android:inputType="textMultiLine"
         android:minHeight="48dp"
         android:text="@string/choose_database_string"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/clearButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TouchTargetSizeCheck" />
 
     <EditText
         android:id="@+id/sqlInEditText"
-        android:layout_width="386dp"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:editable="true"
         android:importantForAutofill="no"
         android:scrollbars="vertical"
-        android:text="@string/sql_input_text"
+        android:hint="Type SQL Query here"
+        android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dbSpinner" />
@@ -146,7 +148,9 @@
     <Button
         android:id="@+id/resetButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:text="@string/reset_button_text"
         app:layout_constraintBottom_toBottomOf="@+id/chooseSourceTextView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -154,10 +158,10 @@
 
     <Spinner
         android:id="@+id/dbSpinner"
-        android:layout_width="379dp"
+        android:layout_width="match_parent"
         android:layout_height="34dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="68dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -184,8 +188,9 @@
     <Button
         android:id="@+id/clearButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
         android:text="@string/clear_button_text"
         app:layout_constraintBottom_toBottomOf="@+id/chooseSourceTextView"
         app:layout_constraintEnd_toStartOf="@+id/resetButton"

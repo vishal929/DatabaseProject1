@@ -7,6 +7,7 @@ import ConnectionUtility.ResultObject
 import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Bundle
+import android.text.Editable
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.Gravity
@@ -47,6 +48,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // setting up onclick for clear button (clearing sql query text)
+        val clearButton = findViewById<Button>(R.id.clearButton)
+        clearButton.setOnClickListener { view ->
+            val sqlInText = findViewById<EditText>(R.id.sqlInEditText)
+            sqlInText.setText("Type SQL Query Here")
+        }
+
         // setting button onclick listener
         val sqlButton: Button = findViewById<Button>(R.id.executeQueryButton)
         sqlButton.setOnClickListener { view ->
@@ -66,6 +74,8 @@ class MainActivity : AppCompatActivity() {
             val dbRadioGroup: RadioGroup = findViewById(R.id.databaseRadioGroup)
             dbRadioGroup.clearCheck()
         }
+
+
 
         //val navView: BottomNavigationView = binding.navView
         // setting up onSelect for radioGroup to populate spinner

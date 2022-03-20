@@ -17,5 +17,6 @@
     <string name="secret_key_input_text">Enter secret key</string>
     <string name="connect_failed_message">Connection Failed!</string>
     <string name="connect_button_text">Connect</string>
+    <string name="clear_button_text">Clear</string>
 
 </resources>

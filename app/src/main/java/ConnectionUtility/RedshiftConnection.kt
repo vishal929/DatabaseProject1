@@ -120,8 +120,11 @@ class RedshiftConnection(
                 Log.d("RedshiftSQLCheck","...$status")
                 if (status.compareTo("FINISHED") == 0) {
                     break
+                } else if (status.compareTo("ABORTED")==0 || status.compareTo("FAILED")==0){
+                    // error
+                    throw Exception("Redshift query was either aborted or has failed!")
                 }
-                Thread.sleep(1000)
+                //Thread.sleep(1000)
             }
             Log.d("RedshiftSQlCheck","SQL request has been completed!")
         } catch (e: Exception) {
@@ -148,14 +151,17 @@ class RedshiftConnection(
             // grabbing column metadata
             val metadata: List<ColumnMetadata> = response.columnMetadata()
             val columnNames:ArrayList<String> = ArrayList<String>()
+            val columnTypes:ArrayList<String> = ArrayList<String>()
             // add column metadata for extracting data logic
             for (columnData in metadata){
                 columnNames.add(columnData.name())
+                columnTypes.add(columnData.typeName())
                 Log.d("ColumnMetaDataRedshift",columnData.name())
                 Log.d("ColumnMetaDataRedshift",columnData.typeName())
+                Log.d("ColumnMetaDataRedshift",columnData.label())
             }
             results = ResultObject()
-            results.setMetaData(columnNames)
+            results.setMetaData(columnNames,columnTypes)
             for (list in dataList) {
                 for (i in list.indices)
                  {

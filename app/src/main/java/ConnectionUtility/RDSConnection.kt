@@ -89,11 +89,14 @@ class RDSConnection (jdbc: String, username: String, password: String){
             // keep in mind that for sql columns are 1 indexed, not 0 indexed
             val numColumns = metaData.columnCount
             val colNames: ArrayList<String> = ArrayList<String>()
+            val colTypes: ArrayList<String> = ArrayList<String>()
             for (i in 1..numColumns){
-                colNames.add(metaData.getColumnName(i))
+                colNames.add(metaData.getColumnLabel(i))
+                colTypes.add(metaData.getColumnTypeName(i))
+                Log.d("rdsColumnType", "column: " + metaData.getColumnLabel(i) + " has type: " + metaData.getColumnTypeName(i))
             }
             // initializing the resultObject based on metadata from ResultSet (column names, etc.)
-            result.setMetaData(colNames)
+            result.setMetaData(colNames,colTypes)
             Log.d("RDS CONNECTION","GOT HERE!")
             while (rs.next()) {
                 // extracting data from each column using the index

@@ -221,6 +221,8 @@ class MainActivity : AppCompatActivity() {
                     Log.d("connection", "WE GOT A CONNECTION!")
                 } else {
                     Log.d("connection", "WE HAVE AN INVALID CONNECTION!")
+                    // returning since invalid
+                    return@execute
                 }
 
                 // picking the selected schema
@@ -244,7 +246,9 @@ class MainActivity : AppCompatActivity() {
                 conn.executeSQL(query)
 
                 // we move onto grabbing results
-                result = conn.grabData(conn.sqlResultSet!!)
+                if (conn.sqlResultSet != null){
+                    result = conn.grabData(conn.sqlResultSet!!)
+                }
 
                 if (result== null){
                     Log.d("sql","RESULTS IS NULL SOMETHING WENT WRONG!\n");

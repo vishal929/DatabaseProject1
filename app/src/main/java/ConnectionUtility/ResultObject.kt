@@ -33,56 +33,16 @@ class ResultObject(){
        }
     }
 
-    fun setMetaData(names:ArrayList<String>){
+    fun setMetaData(names:ArrayList<String>, typeNames:ArrayList<String>){
         // idea here is to just set column names, and provide them an ordering
-        for (name in names){
-            when(name){
-                "department_id" -> {
-                    metaDataHelper("department_id", false)
-                }
-                "department" -> {
-                    metaDataHelper("department", true)
-                }
-                "aisle_id" -> {
-                    metaDataHelper("aisle_id",false)
-                }
-                "aisle" -> {
-                    metaDataHelper("aisle", true)
-                }
-                "product_id" -> {
-                    metaDataHelper("product_id", false)
-                }
-                "product_name" -> {
-                    metaDataHelper("product_name", true)
-                }
-                "order_id" -> {
-                    metaDataHelper("order_id", false)
-                }
-                "user_id" -> {
-                    metaDataHelper("user_id", false)
-                }
-                "order_number" -> {
-                    metaDataHelper("order_number", false)
-                }
-                "order_dow" -> {
-                    metaDataHelper("order_dow",false)
-                }
-                "order_hour_of_day" -> {
-                    metaDataHelper("order_hour_of_day", false)
-                }
-                "days_since_prior_order" -> {
-                    metaDataHelper("days_since_prior_order", false)
-                }
-                "add_to_cart_order" -> {
-                    metaDataHelper("add_to_cart_order", false)
-                }
-                "reordered" -> {
-                    metaDataHelper("reordered",false)
-                }
-                else -> {
-                    Log.d("ResultObjectDebug", "Given element:" + name + " not found!")
-                }
-            }
+        for (i in 0 until names.size){
+           if (typeNames[i]=="INT" || typeNames[i]=="int4"){
+               // should be a integer value
+               metaDataHelper(names[i],false)
+           } else if (typeNames[i]=="VARCHAR" || typeNames[i]=="varchar"){
+               // should be a string value
+               metaDataHelper(names[i],true)
+           }
         }
     }
 

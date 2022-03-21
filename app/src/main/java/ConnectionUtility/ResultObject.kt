@@ -36,7 +36,7 @@ class ResultObject(){
     fun setMetaData(names:ArrayList<String>, typeNames:ArrayList<String>){
         // idea here is to just set column names, and provide them an ordering
         for (i in 0 until names.size){
-           if (typeNames[i]=="INT" || typeNames[i]=="int4"){
+           if (typeNames[i]=="INT" || typeNames[i]=="int4" || typeNames[i]=="int8" || typeNames[i]=="BIGINT"){
                // should be a integer value
                metaDataHelper(names[i],false)
            } else if (typeNames[i]=="VARCHAR" || typeNames[i]=="varchar"){

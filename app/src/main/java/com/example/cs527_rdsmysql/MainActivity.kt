@@ -337,9 +337,14 @@ class MainActivity : AppCompatActivity() {
                     stk.removeViewAt(0)
 
                     // adding view to the header table(not scrollable vertically)
-                    val layoutParams = stk.getChildAt(0).layoutParams
                     headerTable.addView(headerRow)
-                    headerTable.getChildAt(0).layoutParams = layoutParams
+
+                    // we only update layout params on nonempty data
+                    if (numRows>0){
+                        val layoutParams = stk.getChildAt(0).layoutParams
+                        headerTable.getChildAt(0).layoutParams = layoutParams
+                    }
+
 
                 }
             }

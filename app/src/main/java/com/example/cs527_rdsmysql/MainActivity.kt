@@ -5,6 +5,7 @@ import ConnectionUtility.RDSConnection
 import ConnectionUtility.RedshiftConnection
 import ConnectionUtility.ResultObject
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
@@ -286,11 +287,17 @@ class MainActivity : AppCompatActivity() {
                     // Table Headers
                     result.colNames.forEach { i ->
                         val textView = TextView(this)
-                        //val params = TableRow.LayoutParams(1, TableRow.LayoutParams.MATCH_PARENT, 1f)
-                        //textView.setLayoutParams(params)
-                        textView.setText(i)
+                        // layout parameters (should set 0 width, and 1 weight
+                        // 0 width, wrap height, and 1 weight
+                        val params = TableRow.LayoutParams(0,TableRow.LayoutParams.WRAP_CONTENT,
+                            1.0F
+                        )
+                        textView.layoutParams = params
+
+                        textView.text = i
                         textView.setTextColor(Color.BLACK)
                         textView.gravity = Gravity.CENTER
+                        textView.setTypeface(null, Typeface.BOLD)
                         tbrow.addView(textView)
                         //headerTableRow.addView(textView)
                     }
@@ -307,6 +314,13 @@ class MainActivity : AppCompatActivity() {
                         val dataRow = TableRow(this)
                         for (j in 0 until result.indices.size) {
                             val textViewInsert = TextView(this)
+
+                            // layout parameters (should set 0 width, and 1 weight
+                            // 0 width, wrap height, and 1 weight
+                            val params = TableRow.LayoutParams(0,TableRow.LayoutParams.WRAP_CONTENT,
+                                1.0F
+                            )
+                            textViewInsert.layoutParams = params
                             // check if its an int or string type
                             if (result.nameType[j]) {
                                 // this is a string

@@ -379,6 +379,10 @@ class MainActivity : AppCompatActivity() {
         if (finalElapsedTime!="error"){
             val elapsedTime:TextView = findViewById(R.id.TimeElapsedTextViewValue)
             elapsedTime.text = finalElapsedTime
+        } else {
+            // then we have some error querying
+            // lets just throw up an error dialog
+            Toast.makeText(this, "ERROR EXECUTING THE QUERY", Toast.LENGTH_SHORT).show()
         }
 
     }

@@ -151,6 +151,15 @@ class MainActivity : AppCompatActivity() {
                     // dont need to close connection for redshift, since its request based
                 }
             }
+            else ->{
+                val spinner:Spinner = findViewById(R.id.dbSpinner)
+                val spinnerAdapter:ArrayAdapter<String> = ArrayAdapter<String>(this,
+                    android.R.layout.simple_spinner_item, schemas)
+                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spinner.adapter = spinnerAdapter
+                // nothing selected, so just set spinner to be empty list
+                return
+            }
         }
         // attaching schemas to spinner
         // checking schemas

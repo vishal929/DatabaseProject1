@@ -6,11 +6,62 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="402dp"
+        android:layout_height="150dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:showDividers="middle"
+        app:layout_constraintTop_toBottomOf="@+id/executeQueryButton"
+        tools:layout_editor_absoluteX="8dp">
+
+        <HorizontalScrollView
+            android:id="@+id/tblChats"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/LinearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TableLayout
+                    android:id="@+id/headerTable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:stretchColumns="*" />
+
+                <ScrollView
+                    android:id="@+id/scrollView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:translationY="0dp">
+
+                    <TableLayout
+                        android:id="@+id/table_main"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/activity_horizontal_margin"
+                        android:stretchColumns="*">
+
+                    </TableLayout>
+                </ScrollView>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/speechToTextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
         android:clickable="true"
         android:contentDescription="@string/Speech_Text"
         android:src="@android:drawable/ic_btn_speak_now"
@@ -18,60 +69,52 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.101"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sqlOutTextView"
-        app:layout_constraintVertical_bias="0.892" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <RadioGroup
         android:id="@+id/databaseRadioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="32dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/dbSpinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView">
-
-        <RadioButton
-            android:id="@+id/rdsRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/rds_mysql_text"
-            android:onClick="onRadioButtonClicked" />
 
         <RadioButton
             android:id="@+id/redshiftRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:text="@string/redshift_text"
-            app:layout_constraintStart_toEndOf="@+id/rdsRadioButton"
-            android:onClick="onRadioButtonClicked" />
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/redshift_text" />
+
+        <RadioButton
+            android:id="@+id/rdsRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/rds_mysql_text" />
     </RadioGroup>
 
     <Button
         android:id="@+id/executeQueryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
+        android:layout_marginEnd="10dp"
         android:onClick="queryButtonOnClick"
         android:text="@string/sql_button_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sqlInEditText" />
 
     <TextView
-        android:id="@+id/sqlOutTextView"
-        android:layout_width="387dp"
-        android:layout_height="170dp"
-        android:text="@string/sql_output_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/executeQueryButton" />
-
-    <TextView
         android:id="@+id/chooseSourceTextView"
-        android:layout_width="340dp"
-        android:layout_height="50dp"
+        android:layout_width="200dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:clickable="false"
         android:contextClickable="false"
         android:editable="false"
@@ -81,30 +124,77 @@
         android:inputType="textMultiLine"
         android:minHeight="48dp"
         android:text="@string/choose_database_string"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/clearButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <EditText
         android:id="@+id/sqlInEditText"
-        android:layout_width="387dp"
-        android:layout_height="170dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:editable="true"
-        android:text="@string/sql_input_text"
+        android:importantForAutofill="no"
+        android:scrollbars="vertical"
+        android:hint="Type SQL Query here"
+        android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/databaseRadioGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/dbSpinner" />
 
     <Button
         android:id="@+id/resetButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:text="@string/reset_button_text"
+        app:layout_constraintBottom_toBottomOf="@+id/chooseSourceTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.396"
-        app:layout_constraintStart_toEndOf="@id/databaseRadioGroup"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/dbSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chooseSourceTextView" />
+
+    <TextView
+        android:id="@+id/TimeElapsedTextView"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:editable="false"
+        android:text="Time Elapsed:"
+        app:layout_constraintTop_toBottomOf="@+id/sqlInEditText"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="12dp" />
+
+    <TextView
+        android:id="@+id/TimeElapsedTextViewValue"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintStart_toEndOf="@+id/TimeElapsedTextView"
+        app:layout_constraintTop_toBottomOf="@+id/sqlInEditText" />
+
+    <Button
+        android:id="@+id/clearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:text="@string/clear_button_text"
+        app:layout_constraintBottom_toBottomOf="@+id/chooseSourceTextView"
+        app:layout_constraintEnd_toStartOf="@+id/resetButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.444" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

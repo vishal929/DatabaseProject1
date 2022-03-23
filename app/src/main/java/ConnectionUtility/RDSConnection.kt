@@ -42,6 +42,15 @@ class RDSConnection (jdbc: String, username: String, password: String){
 
     }
 
+    // closing the connection
+    fun closeConnection(){
+        try{
+            this.rdsConnection!!.close()
+        } catch(e: Exception){
+            Log.d("closingRDS ERROR:", e.message.toString())
+        }
+    }
+
     // executing a query
     fun executeSQL(sql: String){
         // checking if the connection is still valid
@@ -80,11 +89,14 @@ class RDSConnection (jdbc: String, username: String, password: String){
             // keep in mind that for sql columns are 1 indexed, not 0 indexed
             val numColumns = metaData.columnCount
             val colNames: ArrayList<String> = ArrayList<String>()
+            val colTypes: ArrayList<String> = ArrayList<String>()
             for (i in 1..numColumns){
-                colNames.add(metaData.getColumnName(i))
+                colNames.add(metaData.getColumnLabel(i))
+                colTypes.add(metaData.getColumnTypeName(i))
+                Log.d("rdsColumnType", "column: " + metaData.getColumnLabel(i) + " has type: " + metaData.getColumnTypeName(i))
             }
             // initializing the resultObject based on metadata from ResultSet (column names, etc.)
-            result.setMetaData(colNames)
+            result.setMetaData(colNames,colTypes)
             Log.d("RDS CONNECTION","GOT HERE!")
             while (rs.next()) {
                 // extracting data from each column using the index
@@ -92,12 +104,12 @@ class RDSConnection (jdbc: String, username: String, password: String){
                     if (result.getTypeFromColNum(i)){
                         // we have a string
                         val stringData: String = rs.getString(i)
-                        Log.d("stringData", stringData)
+                        //Log.d("stringData", stringData)
                         result.addStrData(i,stringData)
                     } else{
                         // we have an int
                         val intData: Int = rs.getInt(i)
-                        Log.d("intData", intData.toString())
+                        //Log.d("intData", intData.toString())
                         result.addIntData(i,intData)
                     }
                 }
@@ -128,25 +140,25 @@ class RDSConnection (jdbc: String, username: String, password: String){
 
     // function that gets the current schema
     fun getCurrentSchema(): String{
-       try{
-           return this.rdsConnection!!.catalog
-       } catch(e:Exception){
-           Log.d("grabCurrentSchema","Error grabbing current schema:")
-           Log.d("grabCurrentSchema",e.message.toString())
-       }
+        try{
+            return this.rdsConnection!!.catalog
+        } catch(e:Exception){
+            Log.d("grabCurrentSchema","Error grabbing current schema:")
+            Log.d("grabCurrentSchema",e.message.toString())
+        }
         // returns empty string on failure
         return ""
     }
 
     // switches connection to a specific schema based on the name of it
     fun selectSchema(schemaName: String){
-       try {
-           // switches current catalog to the desired one
-           this.rdsConnection?.catalog = schemaName
-       } catch(e:Exception){
-           Log.d("schemaSwitch", "error while switching schemas:")
-           Log.d("schemaSwitch",e.message.toString())
-       }
+        try {
+            // switches current catalog to the desired one
+            this.rdsConnection?.catalog = schemaName
+        } catch(e:Exception){
+            Log.d("schemaSwitch", "error while switching schemas:")
+            Log.d("schemaSwitch",e.message.toString())
+        }
     }
 
 

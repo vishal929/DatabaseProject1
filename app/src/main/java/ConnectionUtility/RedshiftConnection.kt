@@ -1,12 +1,17 @@
 package ConnectionUtility
 
+import android.os.AsyncTask
 import android.util.Log
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
 import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.redshiftdata.RedshiftDataClient
 import software.amazon.awssdk.services.redshiftdata.model.*
+import java.security.KeyStore
+import java.sql.Connection
 
 
 class RedshiftConnection(
@@ -23,66 +28,43 @@ class RedshiftConnection(
 
 
     // getting a client builder object
-    fun getRedshiftClient(): RedshiftDataClient?{
+    fun getRedshiftClient(): RedshiftDataClient{
         // our cluster is on us east 1
         val region:Region = Region.US_EAST_1
-        try {
-            val redshiftDataClient: RedshiftDataClient = RedshiftDataClient.builder()
-                .httpClient(UrlConnectionHttpClient.create())
-                .region(region)
-                .credentialsProvider(
-                    StaticCredentialsProvider.create(
-                        AwsBasicCredentials.create(
-                            accessKeyID,
-                            secretKey
-                        )
-                    )
+        val redshiftDataClient:RedshiftDataClient = RedshiftDataClient.builder()
+            .httpClient(UrlConnectionHttpClient.create())
+            .region(region)
+            .credentialsProvider(StaticCredentialsProvider.create(
+                AwsBasicCredentials.create(
+                    accessKeyID,
+                    secretKey
                 )
-                .build()
-            return redshiftDataClient
-        } catch (e: Exception) {
-        }
-        return null
+            ))
+            .build()
+        return redshiftDataClient
     }
 
-<<<<<<< Updated upstream
-    // grab a list of databases
-    fun getDatabases(dbUser:String, database:String, clusterId:String): Boolean{
-        if(client == null) return false
-=======
     // grab a list of schemas
     fun getSchemas(): ArrayList<String> {
         if(client == null) return ArrayList<String>()
         val dbUser:String = this.user
         val database:String = this.database
         val clusterId: String = this.clusterID
->>>>>>> Stashed changes
         try {
-            val databasesRequest = ListDatabasesRequest.builder()
+            val schemasRequest = ListSchemasRequest.builder()
                 .clusterIdentifier(clusterId)
                 .dbUser(dbUser)
                 .database(database)
                 .build()
-<<<<<<< Updated upstream
-            val databasesResponse: ListDatabasesResponse =
-                client!!.listDatabases(databasesRequest)
-            val databases = databasesResponse.databases()
-            for (dbName in databases) {
-                println("The database name is : $dbName")
-            }
-            return true
-        } catch (e: Exception) {
-            Log.d("redshiftConnection", "Something went wrong with grabbing redshift databases:")
-            Log.d("redshiftConnection",e.message.toString())
-=======
             val schemasResponse = client!!.listSchemas(schemasRequest)
-            return ArrayList(schemasResponse.schemas())
+            val schemas = ArrayList<String>(schemasResponse.schemas())
+            return schemas
         } catch (e: Exception) {
             Log.d("redshiftConnection", "Something went wrong with grabbing redshift schemas:")
-            Log.d("redshiftConnection", e.message.toString())
->>>>>>> Stashed changes
+            Log.d("redshiftConnection",e.message.toString())
         }
-        return false
+        // return empty array list if failure
+        return ArrayList<String>()
     }
 
     // running a data query given a valid connection
@@ -125,8 +107,11 @@ class RedshiftConnection(
                 Log.d("RedshiftSQLCheck","...$status")
                 if (status.compareTo("FINISHED") == 0) {
                     break
+                } else if (status.compareTo("ABORTED")==0 || status.compareTo("FAILED")==0){
+                    // error
+                    throw Exception("Redshift query was either aborted or has failed!")
                 }
-                Thread.sleep(1000)
+                //Thread.sleep(1000)
             }
             Log.d("RedshiftSQlCheck","SQL request has been completed!")
         } catch (e: Exception) {
@@ -153,30 +138,33 @@ class RedshiftConnection(
             // grabbing column metadata
             val metadata: List<ColumnMetadata> = response.columnMetadata()
             val columnNames:ArrayList<String> = ArrayList<String>()
+            val columnTypes:ArrayList<String> = ArrayList<String>()
             // add column metadata for extracting data logic
             for (columnData in metadata){
                 columnNames.add(columnData.name())
+                columnTypes.add(columnData.typeName())
                 Log.d("ColumnMetaDataRedshift",columnData.name())
                 Log.d("ColumnMetaDataRedshift",columnData.typeName())
+                Log.d("ColumnMetaDataRedshift",columnData.label())
             }
             results = ResultObject()
-            results.setMetaData(columnNames)
+            results.setMetaData(columnNames,columnTypes)
             for (list in dataList) {
                 for (i in list.indices)
-                 {
-                     //Log.d("at index:",i.toString())
-                     val field = list[i] as Field
-                     if (results.getTypeFromColNum(i+1)){
-                         // we have a string
-                         val value = field.stringValue()
-                         results.addStrData(i+1,value)
-                         Log.d("SQLRESULT","Got field: $value")
-                     } else {
+                {
+                    //Log.d("at index:",i.toString())
+                    val field = list[i] as Field
+                    if (results.getTypeFromColNum(i+1)){
+                        // we have a string
+                        val value = field.stringValue()
+                        results.addStrData(i+1,value)
+                        //Log.d("SQLRESULT","Got field: $value")
+                    } else {
                         // we have an integer
-                         val intVal = field.longValue()
-                         results.addIntData(i+1,intVal.toInt())
-                         Log.d("SQLResult,","Got field: $intVal")
-                     }
+                        val intVal = field.longValue()
+                        results.addIntData(i+1,intVal.toInt())
+                        //Log.d("SQLResult,","Got field: $intVal")
+                    }
 
 
 

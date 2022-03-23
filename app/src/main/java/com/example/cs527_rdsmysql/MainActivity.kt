@@ -213,13 +213,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun queryButtonOnClick(view: View){
+        // user tries to run a query without any radio button selected
+        // we show an error popup
+        val rdsRadio: RadioButton = findViewById(R.id.rdsRadioButton)
+        val redshiftRadio: RadioButton = findViewById(R.id.redshiftRadioButton)
+
+
+        if (!rdsRadio.isChecked && !redshiftRadio.isChecked){
+            Toast.makeText(this, "NO DATABASE RADIO BUTTON SELECTED", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val sqlIn: EditText = findViewById(R.id.sqlInEditText)
+        val query:String = sqlIn.text.toString().trim()
+
+        // if the query is empty, dont even try any complex logic
+        if (query.isEmpty()){
+            Toast.makeText(this, "EMPTY QUERY!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         var finalElapsedTime:String = ""
         AsyncTask.execute {
             var result:ResultObject? = null
-            val rdsRadio: RadioButton = findViewById(R.id.rdsRadioButton)
-            val redshiftRadio: RadioButton = findViewById(R.id.redshiftRadioButton)
-            val sqlIn: EditText = findViewById(R.id.sqlInEditText)
-            val query:String = sqlIn.text.toString()
+
+
             // setting a type for result
             sqlIn.movementMethod = ScrollingMovementMethod()
             Log.d("sqlINTextBox", query)

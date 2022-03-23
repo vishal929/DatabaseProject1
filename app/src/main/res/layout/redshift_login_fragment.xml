@@ -6,45 +6,44 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <EditText
+        android:id="@+id/redshift_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:autofillHints="redshift_username"
+        android:hint="@string/username_input_text"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
 
-<EditText
-    android:id="@+id/redshift_username"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="48dp"
-    android:autofillHints="redshift_username"
-    android:hint="@string/username_input_text"
-    android:inputType="text"
-    android:minHeight="48dp"
-    android:textColorHint="#757575"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:layout_editor_absoluteX="0dp" />
+    <EditText
+        android:id="@+id/redshift_access_key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:autofillHints="redshift_access_key"
+        android:hint="@string/access_key_input_text"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        app:layout_constraintTop_toBottomOf="@+id/redshift_username"
+        tools:layout_editor_absoluteX="0dp" />
 
-<EditText
-    android:id="@+id/redshift_access_key"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
-    android:autofillHints="redshift_access_key"
-    android:hint="@string/access_key_input_text"
-    android:inputType="textPassword"
-    android:minHeight="48dp"
-    android:textColorHint="#757575"
-    app:layout_constraintTop_toBottomOf="@+id/redshift_username"
-    tools:layout_editor_absoluteX="0dp" />
-
-<EditText
-    android:id="@+id/redshift_secret_key"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
-    android:autofillHints="redshift_secret_key"
-    android:hint="@string/secret_key_input_text"
-    android:inputType="textPassword"
-    android:minHeight="48dp"
-    android:textColorHint="#757575"
-    app:layout_constraintTop_toBottomOf="@+id/redshift_access_key"
-    tools:layout_editor_absoluteX="0dp" />
+    <EditText
+        android:id="@+id/redshift_secret_key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:autofillHints="redshift_secret_key"
+        android:hint="@string/secret_key_input_text"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        app:layout_constraintTop_toBottomOf="@+id/redshift_access_key"
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/redshift_connect_fail_message"

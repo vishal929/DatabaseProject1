@@ -44,22 +44,9 @@ class RedshiftConnection(
         return redshiftDataClient
     }
 
-    fun testConnection():Boolean{
-        runBlocking{
-            redshiftConnection = false
-            try {
-                client = getRedshiftClient()
-                redshiftConnection = true
-            } catch (e: Exception) {
-                Log.d("RedshiftSqlRequest", "Error with getting redshift client:")
-                Log.d("RedshiftSqlRequest", e.message.toString())
-            }
-        }
-        return redshiftConnection
-    }
-
     // grab a list of schemas
     fun getSchemas(): ArrayList<String> {
+        if(client == null) return ArrayList<String>()
         val dbUser:String = this.user
         val database:String = this.database
         val clusterId: String = this.clusterID
@@ -164,20 +151,20 @@ class RedshiftConnection(
             results.setMetaData(columnNames,columnTypes)
             for (list in dataList) {
                 for (i in list.indices)
-                 {
-                     //Log.d("at index:",i.toString())
-                     val field = list[i] as Field
-                     if (results.getTypeFromColNum(i+1)){
-                         // we have a string
-                         val value = field.stringValue()
-                         results.addStrData(i+1,value)
-                         //Log.d("SQLRESULT","Got field: $value")
-                     } else {
+                {
+                    //Log.d("at index:",i.toString())
+                    val field = list[i] as Field
+                    if (results.getTypeFromColNum(i+1)){
+                        // we have a string
+                        val value = field.stringValue()
+                        results.addStrData(i+1,value)
+                        //Log.d("SQLRESULT","Got field: $value")
+                    } else {
                         // we have an integer
-                         val intVal = field.longValue()
-                         results.addIntData(i+1,intVal.toInt())
-                         //Log.d("SQLResult,","Got field: $intVal")
-                     }
+                        val intVal = field.longValue()
+                        results.addIntData(i+1,intVal.toInt())
+                        //Log.d("SQLResult,","Got field: $intVal")
+                    }
 
 
 

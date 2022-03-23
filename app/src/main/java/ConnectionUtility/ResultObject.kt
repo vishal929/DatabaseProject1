@@ -20,29 +20,29 @@ class ResultObject(){
 
     // isStringVal is true for string types in our table, otherwise false (int type)
     fun metaDataHelper(name:String, isStringVal:Boolean){
-       if (isStringVal){
-           stringColumns.add(ArrayList<String>())
-           colNames.add(name)
-           nameType.add(true)
-           indices.add(stringColumns.size-1)
-       } else{
-           intColumns.add(ArrayList<Int>())
-           colNames.add(name)
-           nameType.add(false)
-           indices.add(intColumns.size-1)
-       }
+        if (isStringVal){
+            stringColumns.add(ArrayList<String>())
+            colNames.add(name)
+            nameType.add(true)
+            indices.add(stringColumns.size-1)
+        } else{
+            intColumns.add(ArrayList<Int>())
+            colNames.add(name)
+            nameType.add(false)
+            indices.add(intColumns.size-1)
+        }
     }
 
     fun setMetaData(names:ArrayList<String>, typeNames:ArrayList<String>){
         // idea here is to just set column names, and provide them an ordering
         for (i in 0 until names.size){
-           if (typeNames[i]=="INT" || typeNames[i]=="int4" || typeNames[i]=="int8" || typeNames[i]=="BIGINT"){
-               // should be a integer value
-               metaDataHelper(names[i],false)
-           } else if (typeNames[i]=="VARCHAR" || typeNames[i]=="varchar"){
-               // should be a string value
-               metaDataHelper(names[i],true)
-           }
+            if (typeNames[i]=="INT" || typeNames[i]=="int4" || typeNames[i]=="int8" || typeNames[i]=="BIGINT"){
+                // should be a integer value
+                metaDataHelper(names[i],false)
+            } else if (typeNames[i]=="VARCHAR" || typeNames[i]=="varchar"){
+                // should be a string value
+                metaDataHelper(names[i],true)
+            }
         }
     }
 
@@ -58,20 +58,20 @@ class ResultObject(){
         throw NoSuchFieldException("field name:" + name + " does not exist")
     }
 
-   // returns True if a string, false if int
+    // returns True if a string, false if int
     // if the given index is out of bounds, we throw NoSuchFieldException
     // columns are 1 indexed in sql, so we decrement the colNum first
     fun getTypeFromColNum(colNum:Int): Boolean{
-       val newIndex = colNum-1
+        val newIndex = colNum-1
         if (newIndex < nameType.size) return nameType[newIndex]
         throw IndexOutOfBoundsException("column number:" + newIndex.toString()+" is out of range when checking column type")
     }
 
-   // adds integer data to a given column
+    // adds integer data to a given column
     // throws IndexOutOfBoundsException if the column number is out of range
     // columns are 1 indexed in sql, so we decreement the col num first
     fun addIntData(colNum:Int, value: Int){
-       val newIndex = colNum-1
+        val newIndex = colNum-1
         if (newIndex < indices.size) {
             intColumns[indices[newIndex]].add(value)
         } else {
@@ -79,15 +79,15 @@ class ResultObject(){
         }
     }
 
-   // adds string data to a given column
+    // adds string data to a given column
     // if the index is out of bounds, we throw IndexOutOfBoundsException
     // columns are 1 indexed in sql, so we decrement the col num first
     fun addStrData(colNum:Int, value: String){
-       val newIndex = colNum-1
-       if (newIndex < indices.size) {
-           stringColumns[indices[newIndex]].add(value)
-       } else {
-           throw IndexOutOfBoundsException("column number:" + newIndex.toString() + " is out of range for adding a string")
-       }
+        val newIndex = colNum-1
+        if (newIndex < indices.size) {
+            stringColumns[indices[newIndex]].add(value)
+        } else {
+            throw IndexOutOfBoundsException("column number:" + newIndex.toString() + " is out of range for adding a string")
+        }
     }
 }

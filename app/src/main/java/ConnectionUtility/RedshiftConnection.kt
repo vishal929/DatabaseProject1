@@ -1,17 +1,12 @@
 package ConnectionUtility
 
-import android.os.AsyncTask
 import android.util.Log
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
 import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.redshiftdata.RedshiftDataClient
 import software.amazon.awssdk.services.redshiftdata.model.*
-import java.security.KeyStore
-import java.sql.Connection
 
 
 class RedshiftConnection(
@@ -28,45 +23,47 @@ class RedshiftConnection(
 
 
     // getting a client builder object
-    fun getRedshiftClient(): RedshiftDataClient{
+    fun getRedshiftClient(): RedshiftDataClient?{
         // our cluster is on us east 1
         val region:Region = Region.US_EAST_1
-        val redshiftDataClient:RedshiftDataClient = RedshiftDataClient.builder()
-            .httpClient(UrlConnectionHttpClient.create())
-            .region(region)
-            .credentialsProvider(StaticCredentialsProvider.create(
-                AwsBasicCredentials.create(
-                    accessKeyID,
-                    secretKey
+        try {
+            val redshiftDataClient: RedshiftDataClient = RedshiftDataClient.builder()
+                .httpClient(UrlConnectionHttpClient.create())
+                .region(region)
+                .credentialsProvider(
+                    StaticCredentialsProvider.create(
+                        AwsBasicCredentials.create(
+                            accessKeyID,
+                            secretKey
+                        )
+                    )
                 )
-            ))
-            .build()
-        return redshiftDataClient
-    }
-
-    fun testConnection():Boolean{
-        runBlocking{
-            redshiftConnection = false
-            try {
-                client = getRedshiftClient()
-                redshiftConnection = true
-            } catch (e: Exception) {
-                Log.d("RedshiftSqlRequest", "Error with getting redshift client:")
-                Log.d("RedshiftSqlRequest", e.message.toString())
-            }
+                .build()
+            return redshiftDataClient
+        } catch (e: Exception) {
         }
-        return redshiftConnection
+        return null
     }
 
+<<<<<<< Updated upstream
     // grab a list of databases
     fun getDatabases(dbUser:String, database:String, clusterId:String): Boolean{
         if(client == null) return false
+=======
+    // grab a list of schemas
+    fun getSchemas(): ArrayList<String> {
+        if(client == null) return ArrayList<String>()
+        val dbUser:String = this.user
+        val database:String = this.database
+        val clusterId: String = this.clusterID
+>>>>>>> Stashed changes
         try {
             val databasesRequest = ListDatabasesRequest.builder()
                 .clusterIdentifier(clusterId)
                 .dbUser(dbUser)
                 .database(database)
                 .build()
+<<<<<<< Updated upstream
             val databasesResponse: ListDatabasesResponse =
                 client!!.listDatabases(databasesRequest)
             val databases = databasesResponse.databases()
@@ -77,6 +74,13 @@ class RedshiftConnection(
         } catch (e: Exception) {
             Log.d("redshiftConnection", "Something went wrong with grabbing redshift databases:")
             Log.d("redshiftConnection",e.message.toString())
+=======
+            val schemasResponse = client!!.listSchemas(schemasRequest)
+            return ArrayList(schemasResponse.schemas())
+        } catch (e: Exception) {
+            Log.d("redshiftConnection", "Something went wrong with grabbing redshift schemas:")
+            Log.d("redshiftConnection", e.message.toString())
+>>>>>>> Stashed changes
         }
         return false
     }

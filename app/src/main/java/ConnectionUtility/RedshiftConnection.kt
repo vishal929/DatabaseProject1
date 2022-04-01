@@ -154,6 +154,8 @@ class RedshiftConnection(
                 {
                     //Log.d("at index:",i.toString())
                     val field = list[i] as Field
+                    results.grabDataRedshift(field,i+1)
+                    /*
                     if (results.getTypeFromColNum(i+1)){
                         // we have a string
                         val value = field.stringValue()
@@ -164,7 +166,7 @@ class RedshiftConnection(
                         val intVal = field.longValue()
                         results.addIntData(i+1,intVal.toInt())
                         //Log.d("SQLResult,","Got field: $intVal")
-                    }
+                    }*/
 
 
 

@@ -381,7 +381,10 @@ class MainActivity : AppCompatActivity() {
                                 1.0F
                             )
                             textViewInsert.layoutParams = params
+                            // insert data into textView
+                            textViewInsert.text = result.grabStringRepresentation(j,rowNum)
                             // check if its an int or string type
+                            /*
                             if (result.nameType[j]) {
                                 // this is a string
                                 textViewInsert.text =
@@ -390,7 +393,7 @@ class MainActivity : AppCompatActivity() {
                                 // must be an int
                                 textViewInsert.text =
                                     result.intColumns[result.indices[j]][rowNum].toString()
-                            }
+                            }*/
                             // add textView to the dataRow
                             textViewInsert.setTextColor(Color.BLACK)
                             textViewInsert.gravity = Gravity.CENTER

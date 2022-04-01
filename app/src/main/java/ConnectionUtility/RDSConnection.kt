@@ -101,6 +101,8 @@ class RDSConnection (jdbc: String, username: String, password: String){
             while (rs.next()) {
                 // extracting data from each column using the index
                 for (i in 1..numColumns){
+                    result.grabDataRDS(rs,i)
+                    /*
                     if (result.getTypeFromColNum(i)){
                         // we have a string
                         val stringData: String = rs.getString(i)
@@ -111,7 +113,7 @@ class RDSConnection (jdbc: String, username: String, password: String){
                         val intData: Int = rs.getInt(i)
                         //Log.d("intData", intData.toString())
                         result.addIntData(i,intData)
-                    }
+                    }*/
                 }
             }
         } catch (e:Exception){

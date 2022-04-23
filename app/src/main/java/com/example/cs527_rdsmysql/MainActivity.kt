@@ -21,19 +21,19 @@ import com.example.cs527_rdsmysql.ui.RedshiftLoginDialog
 
 
 // storing default values for each connection, onSelect for spinner will switch these
-var rdsSchema:String = "Instacart"
+var rdsSchema:String = "InstacartReal"
 var redshiftSchema:String = "public"
 
 // credentials for redshift
-val myAccessKey:String = "AKIAXV2NBU57CCNTWLBX"
-val mySecretKey:String = "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"
-val myUser:String = "dtbs527"
+val myAccessKey:String = "AKIAQNBJBONYDVRJRPSO"
+val mySecretKey:String = "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"
+val myUser:String = "adminUser"
 val redshiftCredentials = RedshiftCredentials(myAccessKey, mySecretKey, myUser, true)
 
 // credentials for rds
-val jdbcUrl = "jdbc:mysql://project1.cabeyzfei4ko.us-east-1.rds.amazonaws.com:3306/Instacart"
-val user = "dtbs527"
-val pass = "Nosqldatabase"
+val jdbcUrl = "jdbc:mysql://database-1.ctrimk6pz3ln.us-east-1.rds.amazonaws.com:3306/InstacartReal"
+val user = "admin"
+val pass = "Nosqldatabase527"
 val rdsCredentials = RDSCredentials(jdbcUrl, user, pass, true)
 
 //// credentials for redshift

@@ -25,9 +25,9 @@ var rdsSchema:String = "InstacartReal"
 var redshiftSchema:String = "public"
 
 // credentials for redshift
-val myAccessKey:String = "AKIAQNBJBONYDVRJRPSO"
-val mySecretKey:String = "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"
-val myUser:String = "adminUser"
+val myAccessKey:String = "AKIAQNBJBONYAZYRUFDM"
+val mySecretKey:String = "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"
+val myUser:String = "admin"
 val redshiftCredentials = RedshiftCredentials(myAccessKey, mySecretKey, myUser, true)
 
 // credentials for rds

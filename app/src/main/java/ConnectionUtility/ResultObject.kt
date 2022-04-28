@@ -350,16 +350,16 @@ class ResultObject(){
     fun setMetaData(names:ArrayList<String>, typeNames:ArrayList<String>){
         // idea here is to just set column names, and provide them an ordering
         for (i in 0 until names.size){
-            if (typeNames[i]=="INT" || typeNames[i]=="int4" || typeNames[i]=="INTEGER" || typeNames[i]=="int"){
+            if (typeNames[i]=="INT" || typeNames[i]=="int4" || typeNames[i]=="INTEGER" || typeNames[i]=="int" || typeNames[i]=="serial" || typeNames[i]=="int8"){
                 // should be an integer value
                 smartMetaDataHelper(names[i],Type.INT)
-            } else if (typeNames[i]=="VARCHAR" || typeNames[i]=="varchar"){
+            } else if (typeNames[i]=="VARCHAR" || typeNames[i]=="varchar" || typeNames[i]=="numeric"){
                 // string value
                 smartMetaDataHelper(names[i],Type.STRING)
             } else if (typeNames[i]=="BOOLEAN" || typeNames[i]=="bool"){
                 // boolean value
                 smartMetaDataHelper(names[i],Type.BOOLEAN)
-            } else if (typeNames[i]=="DECIMAL" || typeNames[i]=="numeric" || typeNames[i] == "NUMERIC"){
+            } else if (typeNames[i]=="DECIMAL" || typeNames[i] == "NUMERIC"){
                 // big decimal value
                 smartMetaDataHelper(names[i],Type.BIG_DECIMAL)
             } else if (typeNames[i]=="float4" || typeNames[i]=="FLOAT"){

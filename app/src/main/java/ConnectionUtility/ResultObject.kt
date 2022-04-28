@@ -350,7 +350,7 @@ class ResultObject(){
     fun setMetaData(names:ArrayList<String>, typeNames:ArrayList<String>){
         // idea here is to just set column names, and provide them an ordering
         for (i in 0 until names.size){
-            if (typeNames[i]=="INT" || typeNames[i]=="int4" || typeNames[i]=="INTEGER" || typeNames[i]=="int" || typeNames[i]=="serial" || typeNames[i]=="int8"){
+            if (typeNames[i]=="INT" || typeNames[i]=="int4" || typeNames[i]=="INTEGER" || typeNames[i]=="int" || typeNames[i]=="serial" || typeNames[i]=="int8" || typeNames[i]=="BIGINT"){
                 // should be an integer value
                 smartMetaDataHelper(names[i],Type.INT)
             } else if (typeNames[i]=="VARCHAR" || typeNames[i]=="varchar" || typeNames[i]=="numeric"){
@@ -399,7 +399,6 @@ class ResultObject(){
     fun grabStringRepresentation(columnIndex:Int,elementIndex:Int): String{
         // grabbing data type from column index
         val type:Type = nameType[columnIndex]
-
         // inserting data based on type
         when (type){
             Type.INT -> {
@@ -439,6 +438,24 @@ class ResultObject(){
                 return timestampColumns[indices[columnIndex]][elementIndex].toString()
             }
         }
+    }
+
+    // returns number of rows in this result object
+    fun getNumRows(): Int{
+        var numRows:Int = 0;
+        if (this.stringColumns.size>0) numRows = Integer.max(numRows,this.stringColumns[0].size)
+        if (this.intColumns.size>0) numRows = Integer.max(numRows,this.intColumns[0].size)
+        if (this.boolColumns.size>0) numRows = Integer.max(numRows,this.boolColumns[0].size)
+        if (this.bigDecimalColumns.size>0) numRows = Integer.max(numRows,this.bigDecimalColumns[0].size)
+        if (this.shortColumns.size>0) numRows = Integer.max(numRows,this.shortColumns[0].size)
+        if (this.longColumns.size>0) numRows = Integer.max(numRows,this.longColumns[0].size)
+        if (this.floatColumns.size>0) numRows = Integer.max(numRows,this.floatColumns[0].size)
+        if (this.doubleColumns.size>0) numRows = Integer.max(numRows,this.doubleColumns[0].size)
+        if (this.byteArrayColumns.size>0) numRows = Integer.max(numRows,this.byteArrayColumns[0].size)
+        if (this.dateColumns.size>0) numRows = Integer.max(numRows,this.dateColumns[0].size)
+        if (this.timeColumns.size>0) numRows = Integer.max(numRows,this.timeColumns[0].size)
+        if (this.timestampColumns.size>0) numRows = Integer.max(numRows,this.timestampColumns[0].size)
+        return numRows
     }
 
     /*

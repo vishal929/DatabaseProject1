@@ -366,10 +366,12 @@ class MainActivity : AppCompatActivity() {
                     // Table Data
                     var rowNum: Int = 0
                     // we have as many rows as values in a column
-                    var numRows: Int = 0
+                    var numRows: Int = result.getNumRows()
+                    /*
                     if (result.intColumns.size > 0) numRows = result.intColumns[0].size
                     if (result.stringColumns.size > 0) numRows =
                         Integer.max(numRows, result.stringColumns[0].size)
+                     */
                     while (rowNum != numRows) {
                         val dataRow = TableRow(this)
                         for (j in 0 until result.indices.size) {

@@ -102,7 +102,7 @@ class RDSConnection (jdbc: String, username: String, password: String){
                 // extracting data from each column using the index
                 for (i in 1..numColumns){
                     result.grabDataRDS(rs,i)
-                    Log.d("RDS Connection grabIndex", i.toString())
+                    //Log.d("RDS Connection grabIndex", i.toString())
                     /*
                     if (result.getTypeFromColNum(i)){
                         // we have a string

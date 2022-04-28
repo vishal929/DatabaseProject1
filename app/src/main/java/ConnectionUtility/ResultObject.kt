@@ -374,7 +374,7 @@ class ResultObject(){
             } else if (typeNames[i]=="TIME" || typeNames[i]=="time"){
                // time value
                 smartMetaDataHelper(names[i],Type.TIME)
-            } else if (typeNames[i]=="TIMESTAMP" || typeNames[i]=="timestamp"){
+            } else if (typeNames[i]=="TIMESTAMP" || typeNames[i]=="timestamp" || typeNames[i]=="DATETIME"){
                 // timestamp value
                 smartMetaDataHelper(names[i],Type.TIMESTAMP)
             } else if (typeNames[i]=="int2" || typeNames[i]=="SMALLINT"){
